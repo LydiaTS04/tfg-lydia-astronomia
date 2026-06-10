@@ -1126,7 +1126,7 @@
 <div id="label-Omega" class="label3d" style="color:#d69e2e;font-size:13px;display:none;">Ω</div>
 
 <div id="ui-panel">
-    <h1>Simulador del ángulo μ</h1>
+    <h1>Simulador del ángulo μ</h1><p style="text-align:center;font-size:12px;color:#8a8f98;margin:-6px 0 10px 0;font-weight:500;">realizado por Lydia Tomás Sanz</p>
 
     <!-- θ: hora del día / azimut del Sol -->
     <div class="control-group">
@@ -1219,7 +1219,7 @@ window.onload = function() {
     const scene    = new THREE.Scene();
     const camera   = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, 0.1, 1000);
     // Cámara en el lado SUR mirando hacia el Norte → brújula correcta (W izquierda, E derecha)
-    camera.position.set(0, 14, 32);
+    camera.position.set(0, 16, 46);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(innerWidth, innerHeight);
@@ -1229,7 +1229,7 @@ window.onload = function() {
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.minDistance = 10;
-    controls.maxDistance = 60;
+    controls.maxDistance = 60; controls.target.set(-5, 1, 0); controls.update();
 
     // Esfera de referencia (muy tenue)
     scene.add(new THREE.Mesh(
