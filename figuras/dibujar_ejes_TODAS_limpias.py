@@ -15,8 +15,8 @@ from math import sin, cos, asin, atan2, sqrt, radians, degrees, pi, hypot
 from PIL import Image, ImageDraw, ImageFont
 random.seed(7)
 
-CARPETA = r'C:\Users\lydia\Downloads\tfg'
-RUTA_BD = os.path.join(CARPETA, 'manchas_tfg.db')
+CARPETA = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RUTA_BD = os.path.join(CARPETA, 'gestor_web', 'manchas_tfg.db')
 DIR_IN  = os.path.join(CARPETA, 'fotos_con_ejes_TODAS')
 DIR_OUT = os.path.join(DIR_IN, 'CON_EJES_CURVOS')
 os.makedirs(DIR_OUT, exist_ok=True)

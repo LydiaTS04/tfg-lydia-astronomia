@@ -13,8 +13,8 @@ from math import sin, cos, atan2, sqrt, radians, degrees, pi, hypot
 from PIL import Image
 random.seed(7)
 
-CARPETA=r'C:\Users\lydia\Downloads\tfg'
-RUTA_BD=os.path.join(CARPETA,'manchas_tfg.db')
+CARPETA=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RUTA_BD=os.path.join(CARPETA,'gestor_web','manchas_tfg.db')
 BASE=os.path.join(CARPETA,'fotos abril 2026','fotos_con_ejes_TODAS')
 DIR_EJES=os.path.join(BASE,'CON_EJES_CURVOS')
 DIR_CLEAN=[BASE, os.path.join(CARPETA,'fotos abril 2026','fotos sin ejes con numeros')]

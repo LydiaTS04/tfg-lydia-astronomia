@@ -66,9 +66,15 @@ Tiene **6 pestañas**:
 
 ## 🧮 3. Código de cálculo — `codigo_calculo/`
 
-El núcleo de la transformación **píxel → coordenadas heliográficas**: el ángulo
-µ, la corrección óptica β_opt, la proyección ortográfica inversa, el triángulo
-del polo solar y el ajuste de la rotación diferencial.
+- **`calculo_principal.py`** — el núcleo: transformación **píxel → coordenadas
+  heliográficas** (ángulo µ, corrección óptica β_opt, proyección ortográfica
+  inversa, triángulo del polo solar) y el ajuste de la rotación diferencial.
+  También es el que genera el gestor web.
+- **`calcular_fit_sin_22manana.py`** — calcula el ajuste A, B (con y sin la toma
+  del 22 por la mañana).
+- **`gen_tablas.py`** — genera las tablas en LaTeX a partir de la base de datos.
+- **`video_alineado.py`, `alinear_video_manchas.py`** — preparan el vídeo de las
+  manchas alineadas que se ve en la pestaña «Animación».
 
 ---
 

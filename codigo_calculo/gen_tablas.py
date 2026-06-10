@@ -2,7 +2,7 @@
 import sqlite3
 BS = chr(92)          # backslash
 E  = ' ' + BS + BS    # fin de fila LaTeX  (espacio + \\)
-con = sqlite3.connect('manchas_tfg.db.bak_20260524_193126_antes_de_restaurar')
+import os; con = sqlite3.connect(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'gestor_web', 'manchas_tfg.db'))
 cur = con.cursor()
 
 def num(v, d=2):

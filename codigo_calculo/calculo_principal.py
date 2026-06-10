@@ -126,8 +126,8 @@ FAYE_B       = -2.300
 # Incertidumbre en pixels para propagacion de errores
 DELTA_PX = 5.0
 
-CARPETA_TFG = r'C:\Users\lydia\Downloads\tfg'
-RUTA_BD = os.path.join(CARPETA_TFG, 'manchas_tfg.db')
+CARPETA_TFG = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RUTA_BD = os.path.join(CARPETA_TFG, 'gestor_web', 'manchas_tfg.db')
 
 # ==================================================
 # BASE DE DATOS
@@ -1454,7 +1454,7 @@ def calcular_rotacion(conn):
     ax2.set_ylim(phi_lo, phi_hi)
     ax2.set_xlim(om_xmin, om_xmax)
 
-    ruta_grafica = os.path.join(CARPETA_TFG, 'rotacion_solar.png')
+    ruta_grafica = os.path.join(CARPETA_TFG, 'figuras', 'rotacion_solar.png')
     plt.savefig(ruta_grafica, dpi=150, bbox_inches='tight')
     print("\n   [OK] Grafica PNG guardada en: {}".format(ruta_grafica))
 
@@ -1639,7 +1639,7 @@ def calcular_rotacion(conn):
                                       'height': 800, 'width': 1600,
                                       'scale': 2},
         }
-        ruta_html = os.path.join(CARPETA_TFG, 'rotacion_solar.html')
+        ruta_html = os.path.join(CARPETA_TFG, 'figuras', 'rotacion_solar.html')
         _fig_html.write_html(ruta_html, include_plotlyjs='cdn',
                              auto_open=True, config=_config_html)
         print("   [OK] Grafica INTERACTIVA guardada en: {}".format(ruta_html))
@@ -2112,7 +2112,39 @@ def calcular_norte(mu_s, R_s, xc, yc, beta_o, l_sol=0.0):
 st.set_page_config(layout="wide", page_title="Gestor BD Manchas")
 st.title("Gestor de Base de Datos - Manchas Solares")
 
-RUTA_BD = r"{RUTA_BD}"
+import shutil, tempfile
+_AQUI = os.path.dirname(os.path.abspath(__file__))
+_RAIZ = os.path.dirname(_AQUI)
+_BD_LYDIA = os.path.join(_AQUI, "manchas_tfg.db")
+
+st.sidebar.header("Base de datos")
+_MODO = st.sidebar.radio("Que quieres hacer?", ["Ver los datos de Lydia (solo lectura)", "Crear una base de datos nueva (meter mis datos)"])
+
+def _crear_bd_vacia(origen, destino):
+    shutil.copy(origen, destino)
+    con = sqlite3.connect(destino); cur = con.cursor()
+    for (t,) in cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'").fetchall():
+        cur.execute('DELETE FROM "%s"' % t)
+    con.commit(); con.close()
+
+@st.cache_resource
+def _preparar_bd(modo):
+    base = os.path.join(tempfile.gettempdir(), "gestor_manchas_tfg")
+    os.makedirs(base, exist_ok=True)
+    if modo.startswith("Ver"):
+        dst = os.path.join(base, "lydia_solo_lectura.db")
+        shutil.copy(_BD_LYDIA, dst)
+        return dst
+    dst = os.path.join(base, "mis_datos.db")
+    if not os.path.exists(dst):
+        _crear_bd_vacia(_BD_LYDIA, dst)
+    return dst
+
+RUTA_BD = _preparar_bd(_MODO)
+if _MODO.startswith("Ver"):
+    st.sidebar.info("Estas viendo los datos reales de Lydia. Trabajas sobre una copia temporal, asi que el original no se toca.")
+else:
+    st.sidebar.success("Base de datos nueva y vacia. Mete tus observaciones y manchas y ve a la pestana Resultados Calculados para el ajuste y la grafica.")
 
 def get_connection():
     return sqlite3.connect(RUTA_BD)
@@ -2571,7 +2603,7 @@ with tab3:
 
 with tab4:
     import sim_solar
-    sim_solar.render_animacion(RUTA_BD)
+    sim_solar.render_animacion(RUTA_BD, video_path=os.path.join(_RAIZ, 'fotos abril 2026', 'fotos_con_ejes_TODAS', 'CON_EJES_CURVOS', 'video', 'video_manchas.mp4'))
 
 
 # =====================================================================
@@ -2866,9 +2898,9 @@ if False:
 
 with tab6:
     import galeria
-    galeria.render_galeria(os.path.dirname(os.path.abspath(RUTA_BD)))
+    galeria.render_galeria(_RAIZ)
 '''
-            path_st = os.path.join(CARPETA_TFG, "gestor_web.py")
+            path_st = os.path.join(CARPETA_TFG, "gestor_web", "gestor_web.py")
             with open(path_st, "w", encoding="utf-8") as f:
                 f.write(codigo_streamlit)
             print("\n[i] Lanzando Gestor Web de Base de Datos (Streamlit)...")

@@ -6,7 +6,7 @@ Calcula A, B con TODOS los datos (validacion) y SIN el 22-manana (id_obs=14).
 import sqlite3, math
 from datetime import datetime
 
-BD=r'C:\Users\lydia\Downloads\tfg\manchas_tfg.db'
+import os; BD=os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'gestor_web', 'manchas_tfg.db')
 FAYE_A=14.370; FAYE_B=-2.300
 TMIN,TMAX=22.0,32.0
 FMTS=['%d-%m-%Y %H:%M','%d/%m/%Y %H:%M','%Y-%m-%d %H:%M:%S','%Y-%m-%d %H:%M','%d-%m-%Y']

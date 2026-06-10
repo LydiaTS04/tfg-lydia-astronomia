@@ -9,8 +9,8 @@ import numpy as np
 from math import sin, cos, asin, atan2, sqrt, radians, pi
 from PIL import Image, ImageDraw, ImageFont
 
-CARPETA = r'C:\Users\lydia\Downloads\tfg'
-RUTA_BD = os.path.join(CARPETA, 'manchas_tfg.db')
+CARPETA = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RUTA_BD = os.path.join(CARPETA, 'gestor_web', 'manchas_tfg.db')
 IMG     = os.path.join(CARPETA, 'fotos abril 2026', 'manchas ejes martes_14-4-26_11_18.png')
 FECHA   = '14-04-2026 11:18'
 PHI_ZERO     = radians(82.0 + 44.0/60.0 + 53.56/3600.0)

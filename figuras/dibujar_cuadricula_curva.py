@@ -12,8 +12,8 @@ import os, sqlite3
 from math import sin, cos, asin, atan2, sqrt, radians, degrees, pi
 from PIL import Image, ImageDraw, ImageFont
 
-CARPETA = r'C:\Users\lydia\Downloads\tfg'
-RUTA_BD = os.path.join(CARPETA, 'manchas_tfg.db')
+CARPETA = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RUTA_BD = os.path.join(CARPETA, 'gestor_web', 'manchas_tfg.db')
 FECHA   = '14-04-2026 11:18'
 
 # --- constantes del codigo (polo solar ecliptica) ---
