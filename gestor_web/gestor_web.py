@@ -105,8 +105,8 @@ RUTA_BD = _preparar_bd(_MODO)
 _SOLO_LECTURA = _MODO.startswith("Ver")   # en modo "ver Lydia" no se puede editar
 
 if _MODO.startswith("Ver"):
-    st.sidebar.info("Estas viendo los datos reales de Lydia. Trabajas sobre una "
-                    "copia temporal, asi que el original no se toca.")
+    st.sidebar.info("Estas viendo los datos reales de Lydia Tomás Sanz. Trabajas sobre "
+                    "una copia temporal, asi que el original no se toca.")
 else:
     st.sidebar.success("Base de datos nueva y vacia. Mete tus observaciones y "
                         "manchas, y ve a la pestana 'Resultados Calculados' para "

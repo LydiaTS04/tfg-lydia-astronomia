@@ -119,16 +119,16 @@ def render_galeria(base_dir):
 
     # ORDEN: primero las mias (abril), luego las de Jose Luis (agosto)
     t_ejes, t_limp, t_jl = st.tabs([
-        "🟢 Mías · con ejes (abril 2026) — %d" % len(ejes),
-        "🌞 Mías · con nº de manchas (abril 2026) — %d" % len(limpias),
+        "🟢 Con ejes (abril 2026) — %d" % len(ejes),
+        "🌞 Con nº de manchas (abril 2026) — %d" % len(limpias),
         "🔭 José Luis (agosto 2024) — %d" % len(jl),
     ])
     with t_ejes:
-        st.caption("Fotos propias con el eje N-S, el ecuador y los paralelos dibujados "
-                   "(cuadrícula heliográfica curva). En orden por fecha.")
+        st.caption("Fotografías de abril 2026 con el eje N-S, el ecuador y los paralelos "
+                   "dibujados (cuadrícula heliográfica curva). En orden por fecha.")
         _seccion(st, ejes, _label_abril, 'ej')
     with t_limp:
-        st.caption("Fotos propias limpias (sin marcas), con las manchas numeradas. En orden por fecha.")
+        st.caption("Fotografías de abril 2026 con las manchas numeradas. En orden por fecha.")
         _seccion(st, limpias, _label_abril, 'li')
     with t_jl:
         st.caption("Fotos cedidas por José Luis (agosto 2024), en orden por fecha. "

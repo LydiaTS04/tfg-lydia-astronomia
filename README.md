@@ -8,7 +8,7 @@ móvil, comprobando que el ecuador gira más rápido que los polos.
 
 ```
 tfg-lydia-astronomia/
-├── simulador_3d/     Simulador 3D del angulo µ
+├── simulador_3d/     Simulador 3D del ángulo µ (signo)
 ├── gestor_web/       Aplicación + base de datos (datos, ajuste, animación, resultado)
 ├── codigo_calculo/   Código de cálculo (píxel → coordenadas heliográficas, ajuste)
 └── figuras/          Generación de figuras (ejes/meridianos y gráfica de Faye)
@@ -38,7 +38,7 @@ El simulador 3D está dentro de la aplicación, en el apartado **Simulador 3D**.
 
 ---
 
-### 1. Simulador 3D del ángulo µ — `simulador_3d/`
+### 1. Simulador 3D del ángulo µ (signo) — `simulador_3d/`
 
 Esfera celeste interactiva que calcula **µ** en tiempo real según la hora sidérea,
 el día del año y la latitud, mostrando π, γ, el arco ⊙–π y el ángulo µ sobre el Sol,
@@ -98,6 +98,8 @@ La aplicación incluye además dos herramientas interactivas:
   sobre las fotografías del Sol, a partir de los datos de cada observación.
 - **`rotacion_solar.html`** — gráfica interactiva de Faye–Carrington: velocidad
   angular ω y periodo frente a la latitud heliográfica Φ.
+
+![Rotación diferencial solar: velocidad angular ω y periodo sidéreo frente a la latitud heliográfica Φ, con las 27 manchas medidas y las curvas de Carrington, Faye y el ajuste propio.](figuras/rotacion_solar.png)
 
 ---
 
