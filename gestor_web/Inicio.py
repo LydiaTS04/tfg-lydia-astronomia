@@ -9,9 +9,12 @@ st.markdown(
     """
 Esta aplicación reúne todo el trabajo en **apartados** (menú de la izquierda \U0001F448):
 
-- \U0001F5A5️ **Gestor de manchas** — la base de datos con mis medidas: observaciones,
-  mediciones, resultados, animación, errores y galería de fotos.
-  Puedes **ver mis datos** o **crear una base nueva** y meter los tuyos.
+- \U0001F5A5️ **Gestor de manchas** — la base de datos con las medidas del trabajo:
+  observaciones, mediciones, resultados, animación, errores, galería y el
+  resultado final. Se puede **ver los datos de Lydia** (solo lectura) o
+  **medir datos propios** en una base nueva.
+- \U0001F9ED **Ejes y meridianos** — dibuja el ecuador y los meridianos heliográficos
+  sobre una foto del Sol (una de la base de datos o una propia).
 - \U0001F300 **Simulador 3D** — la esfera celeste interactiva (ángulo µ, polo de la
   eclíptica π, ecuador celeste y eclíptica).
 """
