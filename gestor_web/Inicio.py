@@ -15,6 +15,8 @@ Esta aplicación reúne todo el trabajo en **apartados** (menú de la izquierda 
   **medir datos propios** en una base nueva.
 - \U0001F9ED **Ejes y meridianos** — dibuja el ecuador y los meridianos heliográficos
   sobre una foto del Sol (una de la base de datos o una propia).
+- \U0001F9EE **Calculadora astronómica** — conversiones de coordenadas (horizontales,
+  ecuatoriales y eclípticas), el ángulo µ del Sol y la distancia entre manchas.
 - \U0001F300 **Simulador 3D** — la esfera celeste interactiva (ángulo µ, polo de la
   eclíptica π, ecuador celeste y eclíptica).
 """

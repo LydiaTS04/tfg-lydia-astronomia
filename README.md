@@ -23,8 +23,8 @@ abre en el navegador:
 
 > **https://tfg-lydia-astronomia-gdan89vjq3jvfdgtdy8bez.streamlit.app/**
 
-En el menú lateral se elige el apartado: **Inicio**, **Gestor de manchas** o
-**Simulador 3D**.
+En el menú lateral se elige el apartado: **Inicio**, **Gestor de manchas**,
+**Ejes y meridianos**, **Calculadora astronómica** o **Simulador 3D**.
 
 **Opción 2 — Ejecutar en local.** Requiere Python 3:
 
@@ -71,6 +71,15 @@ La aplicación se organiza en pestañas:
 | Errores (±σ) | propagación de incertidumbres |
 | Fotos (galería) | fotografías con ejes, limpias y las de agosto de 2024 |
 | Resultado final | gráfica interactiva (ω y periodo frente a la latitud) y comparación con Carrington y Faye |
+
+La aplicación incluye además dos herramientas interactivas:
+
+- **Ejes y meridianos.** Dibuja el ecuador, los paralelos heliográficos y el eje
+  Norte–Sur sobre una foto del Sol (de la base de datos o subida por el usuario),
+  con la misma inversa (Φ, L) → píxel del código.
+- **Calculadora astronómica.** Reproduce las conversiones del código principal
+  (coordenadas horizontales, ecuatoriales y eclípticas), el cálculo del ángulo µ
+  del Sol y la distancia entre dos manchas.
 
 ## 3. Código de cálculo — `codigo_calculo/`
 
