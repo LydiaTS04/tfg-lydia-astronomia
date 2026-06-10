@@ -19,6 +19,7 @@ def _parse_abril(fn):
     """Devuelve (dia, mes, anio, hh, mm) desde el nombre, o None."""
     b = os.path.splitext(os.path.basename(fn))[0]
     b = re.sub(r'^limpia\s+', '', b)
+    b = re.sub(r'^nºmanchas_', '', b)
     b = re.sub(r'_EJES$', '', b)
     b = re.sub(r'\s*-\s*copia$', '', b)
     m = re.search(r'([a-zA-Z]+)_(\d{1,2})-(\d{1,2})-(\d{2})[_-](\d{1,2})[_-](\d{2})', b)
@@ -103,18 +104,13 @@ def render_galeria(base_dir):
         "(el telescopio invierte la imagen).")
 
     dir_ejes  = os.path.join(base_dir, 'fotos abril 2026', 'fotos_con_ejes_TODAS', 'CON_EJES_CURVOS')
-    dir_limp  = os.path.join(base_dir, 'fotos abril 2026', 'fotos_con_ejes_TODAS')
-    dir_limp2 = os.path.join(base_dir, 'fotos abril 2026', 'fotos sin ejes con numeros')
+    dir_limp  = os.path.join(base_dir, 'fotos abril 2026', 'fotos_con_nºmanchas')
     dir_jl    = os.path.join(base_dir, 'joseluis_agosto_2024_ fotos del sol')
 
     ejes = glob.glob(os.path.join(dir_ejes, '*_EJES.png'))
     ejes.sort(key=_key_abril)
 
-    limpias = [f for f in glob.glob(os.path.join(dir_limp, 'limpia *.png'))
-               if 'cuadricula' not in f.lower()]
-    extra14 = glob.glob(os.path.join(dir_limp2, 'limpia martes_14*.png'))
-    if extra14 and not any('martes_14' in f for f in limpias):
-        limpias += extra14
+    limpias = glob.glob(os.path.join(dir_limp, '*.png'))
     limpias.sort(key=_key_abril)
 
     jl = [f for f in glob.glob(os.path.join(dir_jl, '*'))
@@ -124,7 +120,7 @@ def render_galeria(base_dir):
     # ORDEN: primero las mias (abril), luego las de Jose Luis (agosto)
     t_ejes, t_limp, t_jl = st.tabs([
         "🟢 Mías · con ejes (abril 2026) — %d" % len(ejes),
-        "🌞 Mías · limpias (abril 2026) — %d" % len(limpias),
+        "🌞 Mías · con nº de manchas (abril 2026) — %d" % len(limpias),
         "🔭 José Luis (agosto 2024) — %d" % len(jl),
     ])
     with t_ejes:

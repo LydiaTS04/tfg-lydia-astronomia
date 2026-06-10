@@ -34,8 +34,7 @@ cd gestor_web
 streamlit run Inicio.py
 ```
 
-El simulador 3D también puede abrirse por separado haciendo doble clic en
-`simulador_3d/simulador_muu_v3_standalone.html`.
+El simulador 3D está dentro de la aplicación, en el apartado **Simulador 3D**.
 
 ---
 
@@ -87,18 +86,18 @@ La aplicación incluye además dos herramientas interactivas:
   coordenadas heliográficas (ángulo µ, corrección óptica β_opt, proyección
   ortográfica inversa y triángulo del polo solar) y ajuste de la rotación
   diferencial. Su «modo i» abre directamente la aplicación.
-- **`calcular_fit_sin_22manana.py`** — cálculo de los coeficientes A y B.
-- **`gen_tablas.py`** — generación de las tablas en LaTeX a partir de la base de datos.
-- **`video_alineado.py`, `alinear_video_manchas.py`** — preparación del vídeo de
-  las manchas alineadas que se muestra en la pestaña «Animación».
+- **`calculo_coeficientes_AB.py`** — calcula los coeficientes A y B del ajuste de
+  la rotación (con todos los datos y sin la toma del 22 por la mañana).
+- **`gen_tablas.py`** — genera las tablas en LaTeX a partir de la base de datos.
+- **`video_alineado.py`** — prepara el vídeo de las manchas alineadas que se
+  muestra en la pestaña «Animación».
 
 ## 4. Figuras — `figuras/`
 
-- **`dibujar_ejes_TODAS_limpias.py`, `dibujar_cuadricula_curva.py`,
-  `dibujar_cuadricula_limpia.py`** — dibujan los ejes y meridianos heliográficos
+- **`dibujar_ejes_en_fotos.py`** — dibuja los ejes y meridianos heliográficos
   sobre las fotografías del Sol, a partir de los datos de cada observación.
-- **`rotacion_solar.html` / `rotacion_solar.png`** — gráfica de Faye–Carrington:
-  velocidad angular ω y periodo frente a la latitud heliográfica Φ.
+- **`rotacion_solar.html`** — gráfica interactiva de Faye–Carrington: velocidad
+  angular ω y periodo frente a la latitud heliográfica Φ.
 
 ---
 

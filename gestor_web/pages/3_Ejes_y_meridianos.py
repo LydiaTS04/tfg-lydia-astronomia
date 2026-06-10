@@ -126,13 +126,12 @@ def dibujar_ejes(pil_img, xc, yc, R, l_sol_deg, mu_deg, beta_deg):
     return im
 
 def buscar_foto(nombre):
-    cands = (glob.glob(os.path.join(_RAIZ, "fotos abril 2026", "fotos_con_ejes_TODAS", "limpia *.png")) +
-             glob.glob(os.path.join(_RAIZ, "fotos abril 2026", "fotos sin ejes con numeros", "limpia *.png")) +
+    cands = (glob.glob(os.path.join(_RAIZ, "fotos abril 2026", "fotos_con_nºmanchas", "*.png")) +
              glob.glob(os.path.join(_RAIZ, "joseluis_agosto_2024_ fotos del sol", "*.jpg")))
     key = nombre.lower().replace(" ", "")
     for c in cands:
         b = os.path.splitext(os.path.basename(c))[0].lower()
-        b = b.replace("limpia", "").replace(" ", "").replace("-copia", "")
+        b = b.replace("nºmanchas_", "").replace("limpia", "").replace(" ", "").replace("-copia", "")
         if key and (key in b or b in key):
             return c
     return None
