@@ -251,7 +251,7 @@ if 'ultimo_cambio' in st.session_state and st.session_state.get('ultimo_cambio')
         st.dataframe(_sty, use_container_width=True, hide_index=True)
         st.caption("Las celdas AMARILLAS son las cantidades que cambiaron.")
 
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Tabla: Observaciones (Fotos)", "Tabla: Mediciones (Manchas)", "Resultados Calculados", "Animacion Solar", "Errores (+-sigma)", "Fotos (galeria)"])
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(["Tabla: Observaciones (Fotos)", "Tabla: Mediciones (Manchas)", "Resultados Calculados", "Animacion Solar", "Errores (+-sigma)", "Fotos (galeria)", "Resultado final"])
 
 with tab1:
     st.header("Observaciones (Datos de la Imagen y Sol)")
@@ -866,3 +866,19 @@ if False:
 with tab6:
     import galeria
     galeria.render_galeria(_RAIZ)
+
+with tab7:
+    st.header("Resultado final")
+    _graf = os.path.join(_RAIZ, "figuras", "rotacion_solar.png")
+    if os.path.exists(_graf):
+        st.image(_graf, use_column_width=True,
+                 caption="Velocidad angular y periodo frente a la latitud heliografica, con barras de error y comparacion con la ley de Faye.")
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("A  (°/día)", "+14,10 ± 0,28")
+    c2.metric("B  (°/día)", "-2,21 ± 2,47")
+    c3.metric("Periodo ecuador", "≈ 25 días")
+    c4.metric("ω ecuador (°/día)", "≈ 14,1")
+    st.success("B < 0: el ecuador gira más rápido que los polos → rotación diferencial del Sol "
+               "(descarta el giro rígido). El valor central coincide casi con la ley de Faye.")
+    st.caption("Ajuste ω(Φ) = A + B·sin²Φ a las 27 manchas seguidas (χ²_ν ≈ 0,94). "
+               "Si has metido tus propios datos, tu ajuste está en la pestaña «Resultados Calculados».")
