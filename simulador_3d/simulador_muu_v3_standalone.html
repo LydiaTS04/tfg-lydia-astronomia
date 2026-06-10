@@ -1126,7 +1126,7 @@
 <div id="label-Omega" class="label3d" style="color:#d69e2e;font-size:13px;display:none;">Ω</div>
 
 <div id="ui-panel">
-    <h1>Física Universal de μ — v3</h1>
+    <h1>Simulador del ángulo μ</h1>
 
     <!-- θ: hora del día / azimut del Sol -->
     <div class="control-group">
@@ -1404,9 +1404,9 @@ window.onload = function() {
         //   slider=270° → λ=90° (solsticio verano, Sol hacia dirección Aries)
         const lmb = (360 - lmbSlider) % 360;
 
-        document.getElementById('val-theta').innerText  = thetaH.toFixed(2) + 'h';
-        document.getElementById('val-lambda').innerText = lmb.toFixed(2) + '°';
-        document.getElementById('val-phi').innerText    = phi.toFixed(2) + '°';
+        document.getElementById('val-theta').innerText  = thetaH.toFixed(3) + 'h';
+        document.getElementById('val-lambda').innerText = lmb.toFixed(3) + '°';
+        document.getElementById('val-phi').innerText    = phi.toFixed(3) + '°';
 
         // Polo norte celeste
         const ncpH = getHorizontal(0, 90, theta, phi);  // Dec=90°, cualquier α
@@ -1507,23 +1507,23 @@ window.onload = function() {
         const exp  = document.getElementById('mu-explanation');
 
         // Hora sidérea
-        document.getElementById('out-theta-h').innerText = thetaH.toFixed(2) + 'h';
+        document.getElementById('out-theta-h').innerText = thetaH.toFixed(3) + 'h';
 
         // Azimuts y alturas
         // Az Sol en [-180°, 180°]: S=0°, W=+90°, E=−90°, N=±180°
-        document.getElementById('out-az-sol').innerText  = sunHoriz.az.toFixed(2) + '°';
-        document.getElementById('out-alt-sol').innerText = sunHoriz.h.toFixed(2)  + '°';
+        document.getElementById('out-az-sol').innerText  = sunHoriz.az.toFixed(3) + '°';
+        document.getElementById('out-alt-sol').innerText = sunHoriz.h.toFixed(3)  + '°';
         // Bπ: fórmula correcta según convenio del TFG
         //   Aπ = Az(π) en [-180°, 180°], medido desde NZS: horario(W)=+, antihorario(E)=−
         //   Si Aπ > 0 (π al Oeste, horario):      Bπ = −(180 − Aπ)  → negativo
         //   Si Aπ < 0 (π al Este,  antihorario):  Bπ = 180 + Aπ     → positivo
         const Api = piHoriz.az;
         const bpiVal = Api > 0 ? -(180 - Api) : (Api < 0 ? 180 + Api : 0);
-        const bpiStr = (bpiVal > 0 ? '+' : '') + bpiVal.toFixed(2) + '°';
+        const bpiStr = (bpiVal > 0 ? '+' : '') + bpiVal.toFixed(3) + '°';
         const bpiDisp = document.getElementById('out-bpi-display');
         bpiDisp.innerText = bpiStr;
         bpiDisp.style.color = bpiVal > 0 ? '#38a169' : bpiVal < 0 ? '#e53e3e' : '#718096';
-        document.getElementById('out-alt-pi').innerText  = piHoriz.h.toFixed(2)   + '°';
+        document.getElementById('out-alt-pi').innerText  = piHoriz.h.toFixed(3)   + '°';
 
         // Signo de μ: diff = Az(π) − Az(Sol), normalizado a ±180°
         //   diff > 0 → π más al Oeste → μ NEGATIVO
@@ -1548,7 +1548,7 @@ window.onload = function() {
             const muVal = diffBpi > 0 ? -muAbs : diffBpi < 0 ? muAbs : 0;
 
             const color = muVal > 0 ? '#38a169' : muVal < 0 ? '#e53e3e' : '#718096';
-            sign.innerText            = 'μ = ' + muVal.toFixed(2) + '°';
+            sign.innerText            = 'μ = ' + muVal.toFixed(3) + '°';
             sign.style.color          = color;
             box.style.borderLeftColor = color;
         } else {

@@ -166,10 +166,12 @@ if modo.startswith("Una"):
     if not filas:
         st.info("No hay observaciones con µ y λ☉ en la base de datos."); st.stop()
 
-    nombres = [f[0] for f in filas]
+    fila_por_nombre = {f[0]: f for f in filas}
+    # Las de abril (no empiezan por "S") salen primero -> foto de abril por defecto
+    nombres = sorted(fila_por_nombre, key=lambda n: (n.startswith("S"), n))
     sel = st.selectbox("Observación (foto)", nombres)
     row = dict(zip(["archivo_img", "cx", "cy", "R", "lsol", "mu", "beta"],
-                   filas[nombres.index(sel)]))
+                   fila_por_nombre[sel]))
     foto = buscar_foto(sel)
     if not foto:
         st.warning("La foto de esa observación no está en el repositorio. "

@@ -881,13 +881,13 @@ with tab7:
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("A  (°/día)", "+14,10 ± 0,28")
     c2.metric("B  (°/día)", "-2,21 ± 2,47")
-    c3.metric("Periodo ecuador", "≈ 25 días sidéreos")
+    c3.metric("Periodo (sidéreo)", "≈ 25 días")
     c4.metric("χ² reducido", "≈ 0,94")
 
     # Grafica interactiva (la misma que abre el "modo i" del codigo principal):
     # se puede mover, hacer zoom y pasar el raton por cada punto.
     _html = os.path.join(_RAIZ, "figuras", "rotacion_solar.html")
-    _png  = os.path.join(_RAIZ, "figuras", "rotacion_solar.png")
+    _png  = os.path.join(_RAIZ, "figuras", "resultado_faye.png")
     if os.path.exists(_html):
         st.caption("Gráfica interactiva: pasa el ratón por los puntos, amplía y muévela.")
         components.html(open(_html, encoding="utf-8").read(), height=560, scrolling=True)

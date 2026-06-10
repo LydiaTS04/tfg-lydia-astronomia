@@ -1657,7 +1657,7 @@ def calcular_rotacion(conn):
 # ==================================================
 def ask_mode():
     print("\n" + "="*40)
-    print("      CONVERSOR ASTRONOMICO TFG")
+    print("      CALCULO PRINCIPAL - TFG (MANCHAS SOLARES)")
     print("="*40)
     print("a) Horizontales -> Ecuatoriales")
     print("b) Ecuatoriales -> Horizontales")
