@@ -19,7 +19,7 @@ st.markdown(
     "mediciones, resultados, animación, errores, galería y el resultado final. "
     "Puedes consultar los datos de Lydia (solo lectura) o medir los tuyos en una base nueva.\n"
     "- 🌀 **Simulador 3D** — esfera celeste interactiva para entender y calcular el "
-    "ángulo µ (además de otros valores como Bπ, y el azimut y la altura del Sol y de π), "
+    "ángulo µ (además de otros valores como Bπ, hora sidérea, el azimut y la altura del Sol y de π),"
     "con el polo de la eclíptica π, el ecuador celeste y la eclíptica en tiempo real.\n"
     "- 🧭 **Ejes y meridianos** — superpone el ecuador y los meridianos heliográficos "
     "sobre una foto del Sol (de la base de datos o propia).\n"

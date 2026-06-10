@@ -1126,7 +1126,7 @@
 <div id="label-Omega" class="label3d" style="color:#d69e2e;font-size:13px;display:none;">Ω</div>
 
 <div id="ui-panel">
-    <h1>Simulador del ángulo μ</h1><p style="text-align:center;font-size:12px;color:#8a8f98;margin:-6px 0 10px 0;font-weight:500;">realizado por Lydia Tomás Sanz</p>
+    <h1>Simulador 3D del ángulo μ</h1><p style="text-align:center;font-size:12px;color:#8a8f98;margin:-6px 0 10px 0;font-weight:500;">realizado por Lydia Tomás Sanz</p>
 
     <!-- θ: hora del día / azimut del Sol -->
     <div class="control-group">
@@ -1229,7 +1229,7 @@ window.onload = function() {
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.minDistance = 10;
-    controls.maxDistance = 60; controls.target.set(-5, 1, 0); controls.update();
+    controls.maxDistance = 60; controls.target.set(-8, 1, 0); controls.update();
 
     // Esfera de referencia (muy tenue)
     scene.add(new THREE.Mesh(
