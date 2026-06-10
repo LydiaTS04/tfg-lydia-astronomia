@@ -4,3 +4,5 @@
 *.gif binary
 *.html text
 *.py text
+*.jpg binary
+*.mp4 binary
