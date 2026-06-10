@@ -59,7 +59,11 @@ def calcular_norte(mu_s, R_s, xc, yc, beta_o, l_sol=0.0):
 st.set_page_config(layout="wide", page_title="Gestor BD Manchas")
 st.title("Gestor de Base de Datos - Manchas Solares")
 
-RUTA_BD = r"C:\Users\lydia\Downloads\tfg\manchas_tfg.db"
+# La base de datos esta junto a este archivo; las fotos/video estan en la carpeta
+# del proyecto (un nivel por encima de gestor_web/).
+_AQUI = os.path.dirname(os.path.abspath(__file__))
+_RAIZ = os.path.dirname(_AQUI)
+RUTA_BD = os.path.join(_AQUI, "manchas_tfg.db")
 
 def get_connection():
     return sqlite3.connect(RUTA_BD)
@@ -518,7 +522,9 @@ with tab3:
 
 with tab4:
     import sim_solar
-    sim_solar.render_animacion(RUTA_BD)
+    sim_solar.render_animacion(RUTA_BD, video_path=os.path.join(
+        _RAIZ, 'fotos abril 2026', 'fotos_con_ejes_TODAS', 'CON_EJES_CURVOS',
+        'video', 'video_manchas.mp4'))
 
 
 # =====================================================================
@@ -559,7 +565,7 @@ except NameError:
 if _tab5_obj is not None:
     with _tab5_obj:
         st.header("Errores por Mancha (UN punto por mancha)")
-        st.info("Solo lectura. Los sigmas (sigma_Phi, sigma_Lambda, sigma_T, sigma_omega) se calculan en VIVO con propagacion analitica (derivadas parciales, delta = 5 px) usando los valores actuales de mu, beta, centro y radio.")
+        st.info("Solo lectura. Los sigmas (sigma_Phi, sigma_Lambda, sigma_T, sigma_omega) se calculan en VIVO con propagacion numerica (delta = 5 px) usando los valores actuales de mu, beta, centro y radio.")
         st.markdown("""
         **Una fila por mancha** (no por par de observaciones).
         - Phi : media + desviacion tipica muestral de las observaciones, comparada con la propagacion (δ = 5 px). Se usa el MAX.
@@ -591,47 +597,40 @@ if _tab5_obj is not None:
         df_e['dt_obj'] = df_e['fecha_hora'].apply(_parse_e)
         grupos_e = df_e.groupby('id_grupo')
 
-        # --- sigma_Phi y sigma_Lambda por observacion (PROPAGACION ANALITICA, derivadas parciales) ---
-        def _propaga_analitica_obs(obs_r):
+        # --- sigma_Phi y sigma_Lambda por observacion (propagacion 5 px) ---
+        def _sigma_phi_obs(obs_r):
             try:
                 px=float(obs_r['pixel_x']); py=float(obs_r['pixel_y'])
                 mu_r=_math.radians(float(obs_r['mu_angulo']))   if pd.notnull(obs_r['mu_angulo'])   else 0.0
                 be_r=_math.radians(float(obs_r['beta_optica'])) if pd.notnull(obs_r['beta_optica']) else 0.0
                 ls_r=_math.radians(float(obs_r['lambda_sol']))  if pd.notnull(obs_r['lambda_sol'])  else 0.0
-                R=float(obs_r['radio_sol']); cx=float(obs_r['centro_x']); cy=float(obs_r['centro_y'])
-                delta=DELTA_PX_W
-                dx=px-cx; dy=-(py-cy); r=_math.sqrt(dx*dx+dy*dy)
-                if r<1e-9 or R<1e-9: return None, None
-                rho=r/R
-                th=_math.atan2(dy,dx); A=th+mu_r+be_r
-                phi_M=_math.asin(max(-1.0,min(1.0,rho*_math.sin(A)))); cphi=_math.cos(phi_M)
-                if abs(cphi)<1e-9: return None, None
-                v=(rho*_math.cos(A))/cphi
-                if abs(v)>=1.0: return None, None
-                lam_M=_math.asin(max(-1.0,min(1.0,v)))
-                L_aux=ls_r+_math.pi+lam_M-LAMBDA_NORTH_W
-                sP=_math.sin(PHI_ZERO_W)*_math.sin(phi_M)+_math.cos(PHI_ZERO_W)*cphi*_math.cos(L_aux)
-                Phi=_math.asin(max(-1.0,min(1.0,sP))); cPhi=_math.cos(Phi)
-                if abs(cPhi)<1e-9: return None, None
-                sig_rho=delta/R; sig_th=delta/r
-                den_phi=_math.sqrt(max(1.0-(rho*_math.sin(A))**2,1e-18))
-                sig_phi_M=_math.sqrt((_math.sin(A)/den_phi*sig_rho)**2+(rho*_math.cos(A)/den_phi*sig_th)**2)
-                den_lam=_math.sqrt(max(1.0-v*v,1e-18)); inv=1.0/den_lam
-                dv_drho=_math.cos(A)/cphi; dv_dA=-rho*_math.sin(A)/cphi
-                dv_dphi=rho*_math.cos(A)*_math.sin(phi_M)/(cphi*cphi)
-                sig_lam=_math.sqrt((inv*dv_drho*sig_rho)**2+(inv*dv_dA*sig_th)**2+(inv*dv_dphi*sig_phi_M)**2)
-                dw_dphi=_math.sin(PHI_ZERO_W)*cphi-_math.cos(PHI_ZERO_W)*_math.sin(phi_M)*_math.cos(L_aux)
-                dw_dL=-_math.cos(PHI_ZERO_W)*cphi*_math.sin(L_aux); inv_cP=1.0/cPhi
-                sig_Phi=_math.sqrt((inv_cP*dw_dphi*sig_phi_M)**2+(inv_cP*dw_dL*sig_lam)**2)
-                return _math.degrees(sig_lam), _math.degrees(sig_Phi)
+                rs=float(obs_r['radio_sol']); cx=float(obs_r['centro_x']); cy=float(obs_r['centro_y'])
+                d=DELTA_PX_W
+                def _smh(xm,ym):
+                    return solve_mancha_heliografica(mu_r,rs,xm,ym,cx,cy,be_r,ls_r)
+                Phxp,_,_,_,_=_smh(px+d,py); Phxm,_,_,_,_=_smh(px-d,py)
+                Phyp,_,_,_,_=_smh(px,py+d); Phym,_,_,_,_=_smh(px,py-d)
+                return 0.5*_math.sqrt((_math.degrees(Phxp)-_math.degrees(Phxm))**2 +
+                                      (_math.degrees(Phyp)-_math.degrees(Phym))**2)
             except Exception:
-                return None, None
-
-        def _sigma_phi_obs(obs_r):
-            _, sP = _propaga_analitica_obs(obs_r); return sP
+                return None
 
         def _sigma_lambda_obs(obs_r):
-            sL, _ = _propaga_analitica_obs(obs_r); return sL
+            try:
+                px=float(obs_r['pixel_x']); py=float(obs_r['pixel_y'])
+                mu_r=_math.radians(float(obs_r['mu_angulo']))   if pd.notnull(obs_r['mu_angulo'])   else 0.0
+                be_r=_math.radians(float(obs_r['beta_optica'])) if pd.notnull(obs_r['beta_optica']) else 0.0
+                ls_r=_math.radians(float(obs_r['lambda_sol']))  if pd.notnull(obs_r['lambda_sol'])  else 0.0
+                rs=float(obs_r['radio_sol']); cx=float(obs_r['centro_x']); cy=float(obs_r['centro_y'])
+                d=DELTA_PX_W
+                def _smh(xm,ym):
+                    return solve_mancha_heliografica(mu_r,rs,xm,ym,cx,cy,be_r,ls_r)
+                _,Lxp,_,_,_=_smh(px+d,py);  _,Lxm,_,_,_=_smh(px-d,py)
+                _,Lyp,_,_,_=_smh(px,py+d);  _,Lym,_,_,_=_smh(px,py-d)
+                return 0.5*_math.sqrt((_math.degrees(Lxp)-_math.degrees(Lxm))**2 +
+                                      (_math.degrees(Lyp)-_math.degrees(Lym))**2)
+            except Exception:
+                return None
 
         filas_mancha = []
         for grp_id, gdf in grupos_e:
@@ -820,4 +819,4 @@ if False:
 
 with tab6:
     import galeria
-    galeria.render_galeria(os.path.dirname(os.path.abspath(RUTA_BD)))
+    galeria.render_galeria(_RAIZ)
