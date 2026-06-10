@@ -4,7 +4,7 @@ Repositorio del Trabajo de Fin de Grado de **Lydia Tomás Sanz** (Grado en Físi
 
 El trabajo corrobora la **rotación diferencial del Sol** mediante el seguimiento de
 manchas solares fotografiadas con un telescopio reflector (Newton) y un teléfono
-móvil, midiendo cómo varía la velocidad angular con la latitud heliográfica.
+móvil, comprobando que el ecuador gira más rápido que los polos.
 
 ```
 tfg-lydia-astronomia/
