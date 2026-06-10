@@ -8,7 +8,7 @@ móvil, comprobando que el ecuador gira más rápido que los polos.
 
 ```
 tfg-lydia-astronomia/
-├── simulador_3d/     Simulador 3D de la esfera celeste (µ, π, eclíptica)
+├── simulador_3d/     Simulador 3D del angulo µ
 ├── gestor_web/       Aplicación + base de datos (datos, ajuste, animación, resultado)
 ├── codigo_calculo/   Código de cálculo (píxel → coordenadas heliográficas, ajuste)
 └── figuras/          Generación de figuras (ejes/meridianos y gráfica de Faye)
