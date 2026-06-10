@@ -38,3 +38,4 @@ gestor_web_BACKUP_*.py
 
 # Python
 *.pyc
+*.db.bak*

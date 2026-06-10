@@ -1,10 +1,10 @@
 import streamlit as st
 
-st.set_page_config(layout="wide", page_title="TFG Manchas Solares", page_icon="☀️")
+st.set_page_config(layout="wide", page_title="TFG Manchas Solares", page_icon="🌞")
 
 st.markdown(
     """
-# ☀️ Estudio de la dinámica de los gases ionizados en la fotosfera solar
+# 🌞 Estudio de la dinámica de los gases ionizados en la fotosfera solar
 **Lydia Tomás Sanz** · Grado en Física (UAX)
 *La rotación diferencial del Sol, medida con un telescopio amateur y un móvil.*
 
