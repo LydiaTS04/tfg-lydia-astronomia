@@ -898,7 +898,8 @@ with tab7:
     _tabla = pd.DataFrame(
         [["Este trabajo (manchas)", "+14,10 ± 0,28", "-2,21 ± 2,47", "2026"],
          ["Carrington (manchas)",   "14,52",          "-2,84",         "1863"],
-         ["Faye (manchas)",         "14,37",          "-2,30",         "1865"]],
+         ["Faye (manchas)",         "14,37",          "-2,30",         "1865"],
+         ["Snodgrass (Doppler)",    "14,71",          "-2,39",         "1983"]],
         columns=["Modelo", "A (°/día)", "B (°/día)", "Año"])
     st.table(_tabla)
 
