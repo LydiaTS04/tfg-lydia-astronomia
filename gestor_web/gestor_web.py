@@ -4,6 +4,8 @@ import pandas as pd
 import sqlite3
 import math
 import os
+import shutil
+import tempfile
 try:
     import plotly.graph_objects as go
     TIENE_PLOTLY = True
@@ -59,11 +61,55 @@ def calcular_norte(mu_s, R_s, xc, yc, beta_o, l_sol=0.0):
 st.set_page_config(layout="wide", page_title="Gestor BD Manchas")
 st.title("Gestor de Base de Datos - Manchas Solares")
 
-# La base de datos esta junto a este archivo; las fotos/video estan en la carpeta
-# del proyecto (un nivel por encima de gestor_web/).
+# La base de datos de Lydia esta junto a este archivo; las fotos/video estan en la
+# carpeta del proyecto (un nivel por encima de gestor_web/).
 _AQUI = os.path.dirname(os.path.abspath(__file__))
 _RAIZ = os.path.dirname(_AQUI)
-RUTA_BD = os.path.join(_AQUI, "manchas_tfg.db")
+_BD_LYDIA = os.path.join(_AQUI, "manchas_tfg.db")
+
+# ---- Selector: ver los datos de Lydia (solo lectura) o crear una BD nueva ----
+st.sidebar.header("Base de datos")
+_MODO = st.sidebar.radio(
+    "Que quieres hacer?",
+    ["Ver los datos de Lydia (solo lectura)",
+     "Crear una base de datos nueva (meter mis datos)"],
+)
+
+def _crear_bd_vacia(origen, destino):
+    """Copia el esquema (tablas/columnas) de la BD de Lydia, pero SIN datos."""
+    shutil.copy(origen, destino)
+    con = sqlite3.connect(destino); cur = con.cursor()
+    tablas = cur.execute(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'"
+    ).fetchall()
+    for (t,) in tablas:
+        cur.execute('DELETE FROM "%s"' % t)
+    con.commit(); con.close()
+
+@st.cache_resource
+def _preparar_bd(modo):
+    base = os.path.join(tempfile.gettempdir(), "gestor_manchas_tfg")
+    os.makedirs(base, exist_ok=True)
+    if modo.startswith("Ver"):
+        # copia temporal: se puede trastear sin tocar el original de Lydia
+        dst = os.path.join(base, "lydia_solo_lectura.db")
+        shutil.copy(_BD_LYDIA, dst)
+        return dst
+    # base de datos nueva y vacia para los datos del usuario
+    dst = os.path.join(base, "mis_datos.db")
+    if not os.path.exists(dst):
+        _crear_bd_vacia(_BD_LYDIA, dst)
+    return dst
+
+RUTA_BD = _preparar_bd(_MODO)
+
+if _MODO.startswith("Ver"):
+    st.sidebar.info("Estas viendo los datos reales de Lydia. Trabajas sobre una "
+                    "copia temporal, asi que el original no se toca.")
+else:
+    st.sidebar.success("Base de datos nueva y vacia. Mete tus observaciones y "
+                        "manchas, y ve a la pestana 'Resultados Calculados' para "
+                        "el ajuste y la grafica.")
 
 def get_connection():
     return sqlite3.connect(RUTA_BD)

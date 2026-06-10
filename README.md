@@ -39,6 +39,14 @@ cd gestor_web
 streamlit run gestor_web.py
 ```
 
+**Al abrirlo, en la barra lateral puedes elegir dos modos:**
+- 👀 **Ver los datos de Lydia (solo lectura):** explora mis observaciones, mis
+  resultados y la gráfica. Trabajas sobre una copia temporal, así que **no se
+  modifica nada** del original.
+- ✍️ **Crear una base de datos nueva (meter mis datos):** empiezas con una base
+  vacía (con la misma estructura), metes tus propias observaciones y manchas, y
+  obtienes tu ajuste ω(Φ)=A+B·sin²Φ con su gráfica.
+
 Tiene **6 pestañas**:
 
 | Pestaña | Qué muestra |
@@ -66,8 +74,15 @@ del polo solar y el ajuste de la rotación diferencial.
 
 ## 📊 4. Figuras — `figuras/`
 
-Scripts de Python que generan las figuras del TFG (B₀ a lo largo del año, los
-pasos de µ, el dínamo, la rotación diferencial, las cuadrículas heliográficas…).
+Aquí solo están las figuras que de verdad necesitan ejecutarse (las demás del TFG
+ya están como imágenes en el PDF):
+
+- **`dibujar_ejes_TODAS_limpias.py`, `dibujar_cuadricula_curva.py`,
+  `dibujar_cuadricula_limpia.py`** — dibujan los **ejes y meridianos
+  heliográficos sobre las fotos** del Sol, usando los datos de cada observación.
+- **`rotacion_solar.html` / `rotacion_solar.png`** — la **gráfica de Faye**:
+  velocidad angular ω y periodo frente a la latitud heliográfica Φ, comparados
+  con la ley de Faye.
 
 ---
 
