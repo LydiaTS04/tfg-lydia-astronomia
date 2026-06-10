@@ -1,0 +1,6 @@
+* text=auto
+*.db binary
+*.png binary
+*.gif binary
+*.html text
+*.py text

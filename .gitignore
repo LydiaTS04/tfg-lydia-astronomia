@@ -1,0 +1,40 @@
+# ===== Carpetas pesadas / privadas (NO subir) =====
+.claude/
+.vscode/
+__pycache__/
+_docx_media/
+
+# Fotos (pesan mucho)
+fotos/
+fotos abril 2026/
+fotos pruebas 5 dias/
+fotos pruebas malas/
+fotos_con_ejes/
+fotos_con_ejes_TODAS/
+joseluis_agosto_2024_ fotos del sol/
+
+# Documentos, apuntes, bibliografía, LaTeX (no van al repo de código)
+apuntes cloud/
+bibliografia revisar/
+documentos que leer/
+documentos ya entregados y vistos/
+documentos explicacion/
+latex/
+RE_ Reunión*/
+
+# Archivos sueltos grandes / generados
+*.pdf
+*.log
+*.aux
+*.toc
+*.out
+*.synctex.gz
+diagrama_mariposa.gif
+dinamo_manchas.png
+
+# Copias de seguridad de la base de datos (subimos solo la principal)
+manchas_tfg_*.db
+gestor_web_BACKUP_*.py
+
+# Python
+*.pyc
