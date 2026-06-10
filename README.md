@@ -1,133 +1,116 @@
 # 🌞 TFG — Estudio de la dinámica de los gases ionizados en la fotosfera solar
 
-Trabajo de Fin de Grado de **Lydia Tomás Sanz** · Grado en Física (UAX).
+Repositorio del Trabajo de Fin de Grado de **Lydia Tomás Sanz** (Grado en Física, UAX).
 
-Corroboración de la **rotación diferencial del Sol** siguiendo manchas solares
-fotografiadas con un telescopio reflector (Newton) y un móvil, y midiendo cómo
-cambia su velocidad de rotación con la latitud.
+El trabajo corrobora la **rotación diferencial del Sol** mediante el seguimiento de
+manchas solares fotografiadas con un telescopio reflector (Newton) y un teléfono
+móvil, midiendo cómo varía la velocidad angular con la latitud heliográfica.
 
 ```
 tfg-lydia-astronomia/
-├── simulador_3d/     🌀  Simulador 3D de la esfera celeste (µ, π, eclíptica)
-├── gestor_web/       🖥️  App + base de datos (pestañas: datos, ajuste, animación, fotos)
-├── codigo_calculo/   🧮  Código de cálculo (píxel → coordenadas heliográficas, ajuste)
-└── figuras/          📊  Scripts que generan las figuras del TFG
+├── simulador_3d/     Simulador 3D de la esfera celeste (µ, π, eclíptica)
+├── gestor_web/       Aplicación + base de datos (datos, ajuste, animación, resultado)
+├── codigo_calculo/   Código de cálculo (píxel → coordenadas heliográficas, ajuste)
+└── figuras/          Generación de figuras (ejes/meridianos y gráfica de Faye)
 ```
 
 ---
 
-## 🚀 Cómo se abre — todo en una sola app con apartados
+## Cómo acceder
 
-Todo está dentro de **una única aplicación** con menú lateral
-(**Inicio · Gestor de manchas · Simulador 3D**). Para abrirla:
+**Opción 1 — Aplicación en línea (recomendada).** No requiere instalar nada; se
+abre en el navegador:
+
+> **https://tfg-lydia-astronomia-gdan89vjq3jvfdgtdy8bez.streamlit.app/**
+
+En el menú lateral se elige el apartado: **Inicio**, **Gestor de manchas** o
+**Simulador 3D**.
+
+**Opción 2 — Ejecutar en local.** Requiere Python 3:
 
 ```bash
-pip install streamlit numpy opencv-python matplotlib imageio-ffmpeg pandas
+pip install -r requirements.txt
 cd gestor_web
 streamlit run Inicio.py
 ```
 
-Se abre sola en el navegador y eliges el apartado en el menú de la izquierda. 👈
-
-> El simulador 3D también se puede abrir **suelto** haciendo doble clic en
-> `simulador_3d/simulador_muu_v3_standalone.html`.
+El simulador 3D también puede abrirse por separado haciendo doble clic en
+`simulador_3d/simulador_muu_v3_standalone.html`.
 
 ---
 
-## 🌀 1. Simulador 3D — `simulador_3d/`
+## 1. Simulador 3D — `simulador_3d/`
 
-Simulador interactivo de la **esfera celeste**: muestra el ecuador celeste, la
-eclíptica, el polo de la eclíptica **π**, el punto Aries **γ** y el ángulo **µ**
-(entre el meridiano cenit–Sol y el arco ⊙π).
+Simulador interactivo de la esfera celeste. Muestra el ecuador celeste, la
+eclíptica, el polo de la eclíptica π, el punto Aries γ y el ángulo µ (entre el
+meridiano cenit–Sol y el arco ⊙π). No necesita instalación.
 
-▶️ **Para verlo:** abre `simulador_3d/simulador_muu_v3_standalone.html` en
-cualquier navegador (doble clic). No necesita instalar nada.
+## 2. Aplicación y base de datos — `gestor_web/`
 
----
-
-## 🖥️ 2. Gestor web + base de datos — `gestor_web/`
-
-La aplicación principal (Streamlit) para introducir, calcular y visualizar las
-manchas. La base de datos con **mis medidas reales** está aquí mismo:
+Aplicación principal (Streamlit) para introducir, calcular y visualizar las
+manchas. La base de datos con las medidas tomadas por la autora se encuentra en
 `gestor_web/manchas_tfg.db`.
 
-▶️ Se abre desde la app (apartado **«Gestor de manchas»**). También suelto:
-```bash
-cd gestor_web
-streamlit run gestor_web.py
-```
+En la barra lateral se ofrecen **dos modos**:
 
-**Al abrirlo, en la barra lateral puedes elegir dos modos:**
-- 👀 **Ver los datos de Lydia (solo lectura):** explora mis observaciones, mis
-  resultados y la gráfica. Trabajas sobre una copia temporal, así que **no se
-  modifica nada** del original.
-- ✍️ **Crear una base de datos nueva (meter mis datos):** empiezas con una base
-  vacía (con la misma estructura), metes tus propias observaciones y manchas, y
-  obtienes tu ajuste ω(Φ)=A+B·sin²Φ con su gráfica.
+- **Ver los datos de Lydia (solo lectura).** Permite explorar las observaciones,
+  los resultados y las gráficas. Los datos no se pueden modificar (las tablas
+  están bloqueadas y se trabaja sobre una copia temporal).
+- **Medir mis propios datos.** Parte de una base de datos vacía con la misma
+  estructura, donde el usuario introduce sus propias observaciones y manchas y
+  obtiene su ajuste ω(Φ) = A + B·sin²Φ con su gráfica.
 
-Tiene **6 pestañas**:
+La aplicación se organiza en pestañas:
 
-| Pestaña | Qué muestra |
+| Pestaña | Contenido |
 |---|---|
-| **Tabla: Observaciones (Fotos)** | cada foto con su fecha, centro, radio, λ☉, β… |
-| **Tabla: Mediciones (Manchas)** | cada mancha medida y sus coordenadas heliográficas |
-| **Resultados Calculados** | velocidad ω y periodo de cada mancha, y el ajuste ω(Φ)=A+B·sin²Φ |
-| **Animación Solar** | animación de la rotación de las manchas (+ vídeo real de abril) |
-| **Errores (±σ)** | propagación de incertidumbres |
-| **Fotos (galería)** | galería de fotos: con ejes, limpias y las de agosto 2024 |
+| Observaciones (Fotos) | cada fotografía con su fecha, centro, radio, λ☉ y β |
+| Mediciones (Manchas) | cada mancha medida y sus coordenadas heliográficas |
+| Resultados Calculados | velocidad ω y periodo de cada mancha, y el ajuste ω(Φ) |
+| Animación Solar | animación de la rotación de las manchas (con el vídeo de abril) |
+| Errores (±σ) | propagación de incertidumbres |
+| Fotos (galería) | fotografías con ejes, limpias y las de agosto de 2024 |
+| Resultado final | gráfica interactiva (ω y periodo frente a la latitud) y comparación con Carrington y Faye |
 
-> Las fotos y el vídeo se leen de la carpeta del proyecto; en el repositorio no
-> se incluyen por su tamaño, así que esas dos pestañas saldrán vacías si lo
-> ejecutas fuera de mi ordenador.
+## 3. Código de cálculo — `codigo_calculo/`
 
----
+- **`calculo_principal.py`** — núcleo del trabajo: transformación píxel →
+  coordenadas heliográficas (ángulo µ, corrección óptica β_opt, proyección
+  ortográfica inversa y triángulo del polo solar) y ajuste de la rotación
+  diferencial. Su «modo i» abre directamente la aplicación.
+- **`calcular_fit_sin_22manana.py`** — cálculo de los coeficientes A y B.
+- **`gen_tablas.py`** — generación de las tablas en LaTeX a partir de la base de datos.
+- **`video_alineado.py`, `alinear_video_manchas.py`** — preparación del vídeo de
+  las manchas alineadas que se muestra en la pestaña «Animación».
 
-## 🧮 3. Código de cálculo — `codigo_calculo/`
-
-- **`calculo_principal.py`** — el núcleo: transformación **píxel → coordenadas
-  heliográficas** (ángulo µ, corrección óptica β_opt, proyección ortográfica
-  inversa, triángulo del polo solar) y el ajuste de la rotación diferencial.
-  También es el que genera el gestor web.
-- **`calcular_fit_sin_22manana.py`** — calcula el ajuste A, B (con y sin la toma
-  del 22 por la mañana).
-- **`gen_tablas.py`** — genera las tablas en LaTeX a partir de la base de datos.
-- **`video_alineado.py`, `alinear_video_manchas.py`** — preparan el vídeo de las
-  manchas alineadas que se ve en la pestaña «Animación».
-
----
-
-## 📊 4. Figuras — `figuras/`
-
-Aquí solo están las figuras que de verdad necesitan ejecutarse (las demás del TFG
-ya están como imágenes en el PDF):
+## 4. Figuras — `figuras/`
 
 - **`dibujar_ejes_TODAS_limpias.py`, `dibujar_cuadricula_curva.py`,
-  `dibujar_cuadricula_limpia.py`** — dibujan los **ejes y meridianos
-  heliográficos sobre las fotos** del Sol, usando los datos de cada observación.
-- **`rotacion_solar.html` / `rotacion_solar.png`** — la **gráfica de Faye**:
-  velocidad angular ω y periodo frente a la latitud heliográfica Φ, comparados
-  con la ley de Faye.
+  `dibujar_cuadricula_limpia.py`** — dibujan los ejes y meridianos heliográficos
+  sobre las fotografías del Sol, a partir de los datos de cada observación.
+- **`rotacion_solar.html` / `rotacion_solar.png`** — gráfica de Faye–Carrington:
+  velocidad angular ω y periodo frente a la latitud heliográfica Φ.
 
 ---
 
-## 🎯 Resultado principal
+## Resultado principal
 
 Ajustando ω(Φ) = A + B·sin²Φ a las 27 manchas seguidas:
 
 > **A = +14,10 ± 0,28 °/día,  B = −2,21 ± 2,47 °/día**  (χ²_ν ≈ 0,94)
 
 El coeficiente **B < 0** confirma la rotación diferencial: el ecuador gira más
-rápido que los polos, descartando el giro rígido. El periodo ecuatorial sale
-en ~25 días sidéreos, casi igual que el valor clásico de Faye.
+rápido que los polos, lo que descarta el giro rígido. El periodo ecuatorial
+resulta de unos **25 días sidéreos**, en buen acuerdo con los valores clásicos de
+Carrington y Faye.
 
 ---
 
-## ⚙️ Requisitos
+## Requisitos
 
-```bash
-pip install streamlit numpy opencv-python matplotlib imageio-ffmpeg pandas
-```
+La aplicación necesita: `streamlit`, `pandas`, `numpy`, `plotly` (ver
+`requirements.txt`). Los scripts de figuras y vídeo requieren además
+`opencv-python`, `matplotlib` e `imageio-ffmpeg`.
 
 ---
-
-Autora: **Lydia Tomás Sanz** · TFG, Grado en Física (UAX).
+Autora: **Lydia Tomás Sanz** · Trabajo de Fin de Grado, Grado en Física (UAX).

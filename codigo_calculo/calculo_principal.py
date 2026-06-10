@@ -2917,7 +2917,7 @@ with tab7:
                "Si has metido tus propios datos, tu ajuste está en la pestaña «Resultados Calculados».")
 '''
             path_st = os.path.join(CARPETA_TFG, "gestor_web", "gestor_web.py")
-            with open(path_st, "w", encoding="utf-8") as f:
+            if False:  # el gestor se mantiene como archivo propio; no se regenera
                 f.write(codigo_streamlit)
             print("\n[i] Lanzando Gestor Web de Base de Datos (Streamlit)...")
             print("    (Manten esta terminal abierta. Ctrl+C para cerrarlo)")

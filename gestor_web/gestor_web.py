@@ -72,7 +72,7 @@ st.sidebar.header("Base de datos")
 _MODO = st.sidebar.radio(
     "Que quieres hacer?",
     ["Ver los datos de Lydia (solo lectura)",
-     "Crear una base de datos nueva (meter mis datos)"],
+     "Medir mis propios datos"],
 )
 
 def _crear_bd_vacia(origen, destino):
@@ -102,6 +102,7 @@ def _preparar_bd(modo):
     return dst
 
 RUTA_BD = _preparar_bd(_MODO)
+_SOLO_LECTURA = _MODO.startswith("Ver")   # en modo "ver Lydia" no se puede editar
 
 if _MODO.startswith("Ver"):
     st.sidebar.info("Estas viendo los datos reales de Lydia. Trabajas sobre una "
@@ -267,7 +268,7 @@ with tab1:
     # OCULTAMOS hora_sideral del editor (sigue en la BD, solo no se muestra)
     columnas_eliminar = [c for c in ['P_angulo', 'B0_latitud', 'id_observacion', 'hora_sideral']
                          if c in df_obs.columns]
-    df_obs_display = df_obs.drop(columns=columnas_eliminar)
+    df_obs_display = df_obs.drop(columns=columnas_eliminar).round(3)
     cfg_obs = {
         "fecha_hora":     "Fecha (DD/MM/AAAA HH:MM)",
         "archivo_img":    "Nombre de Foto (ID)",
@@ -288,10 +289,12 @@ with tab1:
         "centro_x":       "Centro X (px)",
         "centro_y":       "Centro Y (px)"
     }
-    edited_obs = st.data_editor(df_obs_display, num_rows="dynamic", key="editor_obs", use_container_width=True, column_config=cfg_obs)
+    edited_obs = st.data_editor(df_obs_display, num_rows="dynamic", key="editor_obs", use_container_width=True, column_config=cfg_obs, disabled=_SOLO_LECTURA)
+    if _SOLO_LECTURA:
+        st.caption("🔒 Modo solo lectura: los datos de Lydia no se pueden modificar.")
     st.caption("Al guardar se propagan mu y beta a las manchas y se recalculan automaticamente Phi, Lambda y rho. "
                "Despues del guardado veras un panel con las celdas modificadas resaltadas.")
-    if st.button("Guardar Cambios en Observaciones"):
+    if (not _SOLO_LECTURA) and st.button("Guardar Cambios en Observaciones"):
         # Mantener hora_sideral que esta en BD (no se ha mostrado, no se debe borrar)
         if 'hora_sideral' in df_obs.columns and 'hora_sideral' not in edited_obs.columns:
             edited_obs['hora_sideral'] = df_obs['hora_sideral']
@@ -417,7 +420,7 @@ with tab2:
         df_med = df_med.sort_values(sort_cols, kind='mergesort',
                                     na_position='last').reset_index(drop=True)
         df_med = df_med.drop(columns=['_dt_orden'])
-    df_med_display = df_med.drop(columns=['id_medicion', 'id_observacion'])
+    df_med_display = df_med.drop(columns=['id_medicion', 'id_observacion']).round(3)
     cfg_med = {
         "fecha_hora":   st.column_config.TextColumn("Fecha y Hora", disabled=True),
         "id_grupo":     "ID Mancha",
@@ -434,8 +437,10 @@ with tab2:
         "longitud_L":   st.column_config.NumberColumn("Lambda (grados) [calculado]", disabled=True),
     }
     edited_med = st.data_editor(df_med_display, num_rows="dynamic", key="editor_med",
-                                use_container_width=True, column_config=cfg_med)
-    if st.button("Guardar Cambios en Mediciones"):
+                                use_container_width=True, column_config=cfg_med, disabled=_SOLO_LECTURA)
+    if _SOLO_LECTURA:
+        st.caption("🔒 Modo solo lectura: los datos de Lydia no se pueden modificar.")
+    if (not _SOLO_LECTURA) and st.button("Guardar Cambios en Mediciones"):
         edited_med['id_medicion'] = df_med['id_medicion']
         edited_med['id_observacion'] = df_med['id_observacion']
         edited_med = edited_med.dropna(subset=['id_observacion'])
@@ -554,7 +559,7 @@ with tab3:
                         lon_360 = math.degrees(lon_r) % 360.0
                         lon_pm  = (math.degrees(lon_r) + 180.0) % 360.0 - 180.0
                         st.text("Distancia r:                 {:.2f} px".format(r_c))
-                        st.text("Valor Rho:                   {:.6f}".format(rho_c))
+                        st.text("Valor Rho:                   {:.3f}".format(rho_c))
                         st.text("Angulo Mancha (theta_m):     {}".format(fmt_dms(math.degrees(th_c))))
                         st.text("Norte Solar en foto (X,Y):   ({:.2f}, {:.2f})".format(xn, yn))
                         st.markdown("---")
@@ -868,17 +873,35 @@ with tab6:
     galeria.render_galeria(_RAIZ)
 
 with tab7:
+    import streamlit.components.v1 as components
     st.header("Resultado final")
-    _graf = os.path.join(_RAIZ, "figuras", "rotacion_solar.png")
-    if os.path.exists(_graf):
-        st.image(_graf, use_column_width=True,
-                 caption="Velocidad angular y periodo frente a la latitud heliografica, con barras de error y comparacion con la ley de Faye.")
+    st.markdown("Ajuste de la ley de rotación diferencial **ω(Φ) = A + B·sin²Φ** "
+                "a las 27 manchas seguidas.")
+
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("A  (°/día)", "+14,10 ± 0,28")
     c2.metric("B  (°/día)", "-2,21 ± 2,47")
-    c3.metric("Periodo ecuador", "≈ 25 días")
-    c4.metric("ω ecuador (°/día)", "≈ 14,1")
+    c3.metric("Periodo ecuador", "≈ 25 días sidéreos")
+    c4.metric("χ² reducido", "≈ 0,94")
+
+    # Grafica interactiva (la misma que abre el "modo i" del codigo principal):
+    # se puede mover, hacer zoom y pasar el raton por cada punto.
+    _html = os.path.join(_RAIZ, "figuras", "rotacion_solar.html")
+    _png  = os.path.join(_RAIZ, "figuras", "rotacion_solar.png")
+    if os.path.exists(_html):
+        st.caption("Gráfica interactiva: pasa el ratón por los puntos, amplía y muévela.")
+        components.html(open(_html, encoding="utf-8").read(), height=560, scrolling=True)
+    elif os.path.exists(_png):
+        st.image(_png, use_column_width=True)
+
+    st.subheader("Comparación con los valores históricos (sidéreos)")
+    _tabla = pd.DataFrame(
+        [["Este trabajo (manchas)", "+14,10 ± 0,28", "-2,21 ± 2,47", "2026"],
+         ["Carrington (manchas)",   "14,52",          "-2,84",         "1863"],
+         ["Faye (manchas)",         "14,37",          "-2,30",         "1865"]],
+        columns=["Modelo", "A (°/día)", "B (°/día)", "Año"])
+    st.table(_tabla)
+
     st.success("B < 0: el ecuador gira más rápido que los polos → rotación diferencial del Sol "
                "(descarta el giro rígido). El valor central coincide casi con la ley de Faye.")
-    st.caption("Ajuste ω(Φ) = A + B·sin²Φ a las 27 manchas seguidas (χ²_ν ≈ 0,94). "
-               "Si has metido tus propios datos, tu ajuste está en la pestaña «Resultados Calculados».")
+    st.caption("Si has medido tus propios datos, tu ajuste y tu gráfica salen en la pestaña «Resultados Calculados».")
