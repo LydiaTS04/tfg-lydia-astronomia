@@ -39,23 +39,24 @@ El simulador 3D también puede abrirse por separado haciendo doble clic en
 
 ---
 
-## 1. Simulador 3D — `simulador_3d/`
+### 1. Simulador 3D del ángulo µ — `simulador_3d/`
 
-Simulador interactivo de la esfera celeste. Muestra el ecuador celeste, la
-eclíptica, el polo de la eclíptica π, el punto Aries γ y el ángulo µ (entre el
-meridiano cenit–Sol y el arco ⊙π). No necesita instalación.
+Esfera celeste interactiva que calcula **µ** en tiempo real según la hora sidérea,
+el día del año y la latitud, mostrando π, γ, el arco ⊙–π y el ángulo µ sobre el Sol,
+**además de calcular otros valores** (Bπ y su regla de signo, y el azimut y la altura
+del Sol y de π). Funciona en el navegador, sin instalación.
+
 
 ## 2. Aplicación y base de datos — `gestor_web/`
 
 Aplicación principal (Streamlit) para introducir, calcular y visualizar las
-manchas. La base de datos con las medidas tomadas por la autora se encuentra en
+manchas. La base de datos con las medidas tomadas por Lydia Tomás Sanz se encuentra en
 `gestor_web/manchas_tfg.db`.
 
 En la barra lateral se ofrecen **dos modos**:
 
 - **Ver los datos de Lydia (solo lectura).** Permite explorar las observaciones,
-  los resultados y las gráficas. Los datos no se pueden modificar (las tablas
-  están bloqueadas y se trabaja sobre una copia temporal).
+  los resultados, animaciones y las gráficas. Los datos no se pueden modificar.
 - **Medir mis propios datos.** Parte de una base de datos vacía con la misma
   estructura, donde el usuario introduce sus propias observaciones y manchas y
   obtiene su ajuste ω(Φ) = A + B·sin²Φ con su gráfica.
@@ -67,16 +68,15 @@ La aplicación se organiza en pestañas:
 | Observaciones (Fotos) | cada fotografía con su fecha, centro, radio, λ☉ y β |
 | Mediciones (Manchas) | cada mancha medida y sus coordenadas heliográficas |
 | Resultados Calculados | velocidad ω y periodo de cada mancha, y el ajuste ω(Φ) |
-| Animación Solar | animación de la rotación de las manchas (con el vídeo de abril) |
+| Animación Solar | animación de la rotación de las manchas, tanto de abril 2026 (video y simulación), como de agosto 2024 (simulación) |
 | Errores (±σ) | propagación de incertidumbres |
-| Fotos (galería) | fotografías con ejes, limpias y las de agosto de 2024 |
+| Fotos (galería) | fotografías con ejes abril 2026, limpias abril 2026 y las de agosto de 2024 |
 | Resultado final | gráfica interactiva (ω y periodo frente a la latitud) y comparación con Carrington y Faye |
 
 La aplicación incluye además dos herramientas interactivas:
 
 - **Ejes y meridianos.** Dibuja el ecuador, los paralelos heliográficos y el eje
-  Norte–Sur sobre una foto del Sol (de la base de datos o subida por el usuario),
-  con la misma inversa (Φ, L) → píxel del código.
+  Norte–Sur sobre una foto del Sol (de la base de datos o subida por el usuario introduciendo unos valores)
 - **Calculadora astronómica.** Reproduce las conversiones del código principal
   (coordenadas horizontales, ecuatoriales y eclípticas), el cálculo del ángulo µ
   del Sol y la distancia entre dos manchas.
@@ -108,7 +108,7 @@ Ajustando ω(Φ) = A + B·sin²Φ a las 27 manchas seguidas:
 
 > **A = +14,10 ± 0,28 °/día,  B = −2,21 ± 2,47 °/día**  (χ²_ν ≈ 0,94)
 
-El coeficiente **B < 0** confirma la rotación diferencial: el ecuador gira más
+El coeficiente **B < 0** confirma la rotación diferencial, el ecuador gira más
 rápido que los polos, lo que descarta el giro rígido. El periodo ecuatorial
 resulta de unos **25 días sidéreos**, en buen acuerdo con los valores clásicos de
 Carrington y Faye.
