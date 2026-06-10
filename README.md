@@ -16,6 +16,24 @@ tfg-lydia-astronomia/
 
 ---
 
+## 🚀 Cómo se abre — todo en una sola app con apartados
+
+Todo está dentro de **una única aplicación** con menú lateral
+(**Inicio · Gestor de manchas · Simulador 3D**). Para abrirla:
+
+```bash
+pip install streamlit numpy opencv-python matplotlib imageio-ffmpeg pandas
+cd gestor_web
+streamlit run Inicio.py
+```
+
+Se abre sola en el navegador y eliges el apartado en el menú de la izquierda. 👈
+
+> El simulador 3D también se puede abrir **suelto** haciendo doble clic en
+> `simulador_3d/simulador_muu_v3_standalone.html`.
+
+---
+
 ## 🌀 1. Simulador 3D — `simulador_3d/`
 
 Simulador interactivo de la **esfera celeste**: muestra el ecuador celeste, la
@@ -33,7 +51,7 @@ La aplicación principal (Streamlit) para introducir, calcular y visualizar las
 manchas. La base de datos con **mis medidas reales** está aquí mismo:
 `gestor_web/manchas_tfg.db`.
 
-▶️ **Para arrancarlo:**
+▶️ Se abre desde la app (apartado **«Gestor de manchas»**). También suelto:
 ```bash
 cd gestor_web
 streamlit run gestor_web.py

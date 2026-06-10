@@ -1,0 +1,25 @@
+import streamlit as st
+
+st.set_page_config(layout="wide", page_title="TFG Manchas Solares", page_icon="\U0001F31E")
+
+st.title("\U0001F31E TFG — Estudio de la rotación del Sol")
+st.subheader("Lydia Tomás Sanz · Grado en Física (UAX)")
+
+st.markdown(
+    """
+Esta aplicación reúne todo el trabajo en **apartados** (menú de la izquierda \U0001F448):
+
+- \U0001F5A5️ **Gestor de manchas** — la base de datos con mis medidas: observaciones,
+  mediciones, resultados, animación, errores y galería de fotos.
+  Puedes **ver mis datos** o **crear una base nueva** y meter los tuyos.
+- \U0001F300 **Simulador 3D** — la esfera celeste interactiva (ángulo µ, polo de la
+  eclíptica π, ecuador celeste y eclíptica).
+"""
+)
+
+st.info(
+    "Resultado principal:  A = +14,10 ± 0,28 °/día,  B = −2,21 ± 2,47 °/día "
+    "→ el ecuador gira más rápido que los polos (rotación diferencial)."
+)
+
+st.caption("Elige un apartado en el menú de la izquierda para empezar.")
