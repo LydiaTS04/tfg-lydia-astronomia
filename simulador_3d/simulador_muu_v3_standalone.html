@@ -34,16 +34,16 @@
         .value-display[contenteditable="true"] {
             background: #ebf8ff; border-bottom: 2px solid #2b6cb0;
             outline: none; color: #2b6cb0; }
-        #result-box { margin-top: 20px; padding: 15px;
+        #result-box { margin-top: 12px; padding: 12px;
                       background: rgba(237,242,247,0.9); border-radius: 10px;
                       border-left: 5px solid #2b6cb0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
         #mu-sign { font-size: 1.5rem; font-weight: 800; margin: 8px 0; letter-spacing: -0.5px; }
         #mu-explanation { font-size: 0.8rem; color: #4a5568; line-height: 1.4; }
         .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-                     font-size: 0.75rem; margin-top: 15px; color: #718096;
+                     font-size: 0.75rem; margin-top: 8px; color: #718096;
                      background: rgba(255,255,255,0.7); padding: 10px; border-radius: 8px; }
         .data-val { color: #1a202c; font-family: monospace; font-size: 0.9rem; font-weight: bold; }
-        .legend { margin-top: 10px; font-size: 0.78rem; color: #4a5568; font-weight: 500; }
+        .legend { margin-top: 10px; font-size: 0.73rem; color: #4a5568; font-weight: 500; display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
         .legend-item { display: flex; align-items: center; margin-bottom: 6px; }
         .color-box { width: 14px; height: 14px; border-radius: 4px; margin-right: 8px;
                      box-shadow: 0 0 2px rgba(0,0,0,0.3); flex-shrink:0; }
@@ -1158,7 +1158,7 @@
     <div id="result-box">
         <!-- μ EN GRANDE -->
         <div style="font-size:0.8rem;color:#2b6cb0;font-weight:bold;margin-bottom:2px;">Ángulo μ:</div>
-        <div id="mu-sign" style="font-size:2rem;font-weight:900;margin:4px 0;letter-spacing:-1px;">—</div>
+        <div id="mu-sign" style="font-size:1.4rem;font-weight:900;margin:2px 0;letter-spacing:-1px;">—</div>
         <div style="font-size:0.72rem;color:#718096;margin-bottom:6px;">
             cos(μ) = [sin(φ)·cos(ε) − cos(φ)·sin(ε)·sin(θ)] / cos(h☉)
         </div>
