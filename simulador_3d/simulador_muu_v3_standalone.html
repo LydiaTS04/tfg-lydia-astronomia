@@ -1175,6 +1175,7 @@
     </div>
 
     <div class="legend">
+        <div class="legend-item"><span style="font-size:15px;margin-right:5px;line-height:1;">🌞</span> Sol (☉)</div>
         <div class="legend-item"><div class="color-box" style="background:#fff;border:1px solid #aaa;"></div> Meridiano S–Z–N</div>
         <div class="legend-item"><div class="color-box" style="background:#38a169;"></div> Eje Vertical / Meridiano ☉</div>
         <div class="legend-item"><div class="color-box" style="background:#4299e1;"></div> Ecuador Celeste</div>
@@ -1219,7 +1220,7 @@ window.onload = function() {
     const scene    = new THREE.Scene();
     const camera   = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, 0.1, 1000);
     // Cámara en el lado SUR mirando hacia el Norte → brújula correcta (W izquierda, E derecha)
-    camera.position.set(0, 13, 36);
+    const _EMBED = (window.self !== window.top); camera.position.set(0, _EMBED?16:13, _EMBED?50:36);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(innerWidth, innerHeight);
@@ -1229,7 +1230,7 @@ window.onload = function() {
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.minDistance = 10;
-    controls.maxDistance = 60; controls.target.set(-4, 1, 0); controls.update();
+    controls.maxDistance = 60; controls.target.set(_EMBED?-7:-4, 1, 0); controls.update();
 
     // Esfera de referencia (muy tenue)
     scene.add(new THREE.Mesh(
@@ -1368,7 +1369,7 @@ window.onload = function() {
     const arcMu     = mkLine(C_MU,      1.00); scene.add(arcMu);
 
     // Esferas Sol y π
-    const sunMesh = new THREE.Mesh(new THREE.SphereGeometry(0.55,32,32), new THREE.MeshBasicMaterial({color:C_ECLIPT})); scene.add(sunMesh);
+    const sunMesh = new THREE.Mesh(new THREE.SphereGeometry(0.7,32,32), new THREE.MeshBasicMaterial({color:C_SUN_D})); scene.add(sunMesh);
     const piMesh  = new THREE.Mesh(new THREE.SphereGeometry(0.35,32,32), new THREE.MeshBasicMaterial({color:0x805ad5})); scene.add(piMesh);
 
     const zenithPos = new THREE.Vector3(0, R, 0);
