@@ -41,6 +41,7 @@ Esfera celeste interactiva que calcula **µ** en tiempo real según la hora sid�
 el día del año y la latitud, mostrando π, γ, el arco ⊙–π y el ángulo µ sobre el Sol,
 además de calcular otros valores (Bπ y su regla de signo, y el azimut y la altura
 del Sol y de π). Funciona en el navegador, sin instalación.
+👉 [Abrir el simulador](https://lydiats04.github.io/tfg-lydia-astronomia/simulador_3d/simulador_muu_v3_standalone.html)
 
 
 ## 2. Aplicación y base de datos — `gestor_web/`
@@ -101,8 +102,9 @@ La aplicación incluye además tres herramientas interactivas:
 
 - **`dibujar_ejes_en_fotos.py`** — dibuja los ejes y meridianos heliográficos
   sobre las fotografías del Sol, a partir de los datos de cada observación.
-- **`rotacion_solar.html`** — gráfica interactiva de Faye–Carrington: velocidad
-  angular ω y periodo frente a la latitud heliográfica Φ.
+- **`rotacion_solar.html`** — gráfica interactiva de Faye–Carrington (velocidad
+  angular ω y periodo frente a la latitud heliográfica Φ).
+  👉 [Verla en línea](https://lydiats04.github.io/tfg-lydia-astronomia/figuras/rotacion_solar.html)
 
 ![Rotación diferencial solar: velocidad angular ω y periodo sidéreo frente a la latitud heliográfica Φ, con las 27 manchas medidas y las curvas de Carrington, Faye y el ajuste propio.](figuras/resultado_faye.png)
 
