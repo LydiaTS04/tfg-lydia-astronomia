@@ -252,7 +252,7 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
             elif os.path.exists(gif):
                 st.image(gif, use_container_width=True)
         with col_s:
-            st.markdown("#### 🖥️ Simulacion 3D")
+            st.markdown("#### 🖥️ Simulacion 3D — el rastro de cada mancha")
             st.plotly_chart(fig, use_container_width=True)
     else:
         st.plotly_chart(fig, use_container_width=True)
@@ -263,4 +263,13 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
         "Vuelve a dar PLAY para empezar de nuevo. En la leyenda: clic para ocultar, "
         "**doble clic para ver solo una**. Las manchas a distinta latitud giran a distinta "
         "velocidad (rotacion diferencial)."
+    )
+
+    st.info(
+        "👉 **Para que sirve la animacion 3D de la derecha:** para ver el **rastro** que deja "
+        "cada mancha a lo largo de los dias. Al darle a **▶ Play**, cada mancha va dibujando "
+        "una linea de su color con el camino que va recorriendo segun gira el Sol. Como las "
+        "manchas cercanas al ecuador giran mas rapido que las de latitudes altas, **sus "
+        "rastros tienen distinta longitud** — y eso es justo la rotacion diferencial que "
+        "se mide en el TFG. (La de la izquierda son las fotos reales alineadas.)"
     )
