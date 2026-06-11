@@ -131,6 +131,7 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
         Xs.append(rx); Ys.append(ry); Zs.append(rz); Cs.append(rc)
     sphere = go.Surface(x=Xs, y=Ys, z=Zs, surfacecolor=Cs, showscale=False, opacity=1.0,
         hoverinfo='skip', showlegend=False, cmin=0.0, cmax=1.0,
+        contours=dict(x=dict(highlight=False), y=dict(highlight=False), z=dict(highlight=False)),
         lighting=dict(ambient=0.95, diffuse=0.15, specular=0.03, roughness=1.0),
         colorscale=[[0.0, '#5a1600'], [0.25, '#8a2a00'], [0.5, '#cc5500'],
                     [0.75, '#ff9930'], [0.92, '#ffd070'], [1.0, '#fff5c0']])
