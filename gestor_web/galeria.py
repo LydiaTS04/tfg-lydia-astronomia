@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Galeria de fotos para el gestor (pestana "Fotos").
+Galeria de fotos para el gestor (pestaña "Fotos").
 Tres secciones EN ORDEN CRONOLOGICO: con ejes (abril), sin ejes/limpias (abril),
 y Jose Luis (agosto 2024).
 
@@ -16,7 +16,7 @@ MESES = {1:'ene',2:'feb',3:'mar',4:'abr',5:'may',6:'jun',
 
 
 def _parse_abril(fn):
-    """Devuelve (dia, mes, anio, hh, mm) desde el nombre, o None."""
+    """Devuelve (día, mes, anio, hh, mm) desde el nombre, o None."""
     b = os.path.splitext(os.path.basename(fn))[0]
     b = re.sub(r'^limpia\s+', '', b)
     b = re.sub(r'^nºmanchas_', '', b)
@@ -32,15 +32,15 @@ def _parse_abril(fn):
 def _label_abril(fn):
     p = _parse_abril(fn)
     if p:
-        dia = p[0].lower(); dia = dia[0].upper() + dia[1:]
-        return "%s %d %s · %02d:%02d" % (dia, p[1], MESES.get(p[2], '?'), p[4], p[5])
+        día = p[0].lower(); día = día[0].upper() + día[1:]
+        return "%s %d %s · %02d:%02d" % (día, p[1], MESES.get(p[2], '?'), p[4], p[5])
     return os.path.splitext(os.path.basename(fn))[0]
 
 
 def _key_abril(fn):
     p = _parse_abril(fn)
     if p:
-        return (p[3], p[2], p[1], p[4], p[5])   # anio, mes, dia, hh, mm
+        return (p[3], p[2], p[1], p[4], p[5])   # anio, mes, día, hh, mm
     return (9999, 99, 99, 99, 99)
 
 
@@ -62,7 +62,7 @@ def _label_jl(fn):
 def _key_jl(fn):
     p = _parse_jl(fn)
     if p:
-        return (p[3], p[2], p[1])   # anio, mes, dia
+        return (p[3], p[2], p[1])   # anio, mes, día
     return (9999, 99, 99)
 
 

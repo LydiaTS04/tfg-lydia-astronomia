@@ -2911,10 +2911,10 @@ with tab7:
     c2.metric("B  (°/día)", "-2,21 ± 2,47")
     c3.metric("Periodo ecuador", "≈ 25 días")
     c4.metric("ω ecuador (°/día)", "≈ 14,1")
-    st.success("B < 0: el ecuador gira más rápido que los polos → rotación diferencial del Sol "
-               "(descarta el giro rígido). El valor central coincide casi con la ley de Faye.")
-    st.caption("Ajuste ω(Φ) = A + B·sin²Φ a las 27 manchas seguidas (χ²_ν ≈ 0,94). "
-               "Si has metido tus propios datos, tu ajuste está en la pestaña «Resultados Calculados».")
+    st.success("B < 0: el ecuador gira más rápido que los polos → coherente con la rotación "
+               "diferencial del Sol. El valor central coincide casi con la ley de Faye.")
+    st.caption("Ajuste ω(Φ) = A + B·sin²Φ a las 27 manchas seguidas (s² ≈ 0,94). "
+               "Si has metido tus propios datos, tu ajuste está en la pestaña «Resultado final».")
 '''
             path_st = os.path.join(CARPETA_TFG, "gestor_web", "gestor_web.py")
             if False:  # el gestor se mantiene como archivo propio; no se regenera

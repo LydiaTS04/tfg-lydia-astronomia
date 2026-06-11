@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Simulacion 3D INTERACTIVA de la rotacion solar (pestana "Animacion" del gestor).
+Simulación 3D INTERACTIVA de la rotación solar (pestaña "Animación" del gestor).
 
-- Es una BOLA (esfera) que puedes girar con el raton.
+- Es una BOLA (esfera) que puedes girar con el ratón.
 - Al principio: solo las manchas, SIN rastro.
-- Le das a PLAY -> se forma el rastro y se anima la rotacion.
+- Le das a PLAY -> se forma el rastro y se anima la rotación.
 - Al terminar la vuelta se PARA con el rastro marcado; puedes girar la esfera
   para verlo a tu gusto.
 - Si vuelves a dar a PLAY, empieza de nuevo (rastro desde cero).
@@ -22,7 +22,7 @@ LN_DEG       = math.degrees(LAMBDA_NORTH)
 
 def omega_syn(phi_deg):
     pr = math.radians(abs(float(phi_deg)))
-    return 14.370 - 0.9856 - 2.300 * math.sin(pr) ** 2   # grados/dia (sinodico)
+    return 14.370 - 0.9856 - 2.300 * math.sin(pr) ** 2   # grados/día (sinodico)
 
 # paleta de colores MUY distintos (Material, brillantes sobre fondo oscuro)
 COLORES = ['#FF1744', '#00E676', '#2979FF', '#FFEA00', '#D500F9',
@@ -50,7 +50,7 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
         video_path = os.path.join(base, 'fotos abril 2026', 'fotos_con_ejes_TODAS',
                                   'CON_EJES_CURVOS', 'video', 'video_manchas.mp4')
 
-    st.header("Animacion: Rotacion Solar")
+    st.header("Animación: Rotación Solar")
 
     con = sqlite3.connect(ruta_bd)
     df = pd.read_sql_query("""
@@ -139,7 +139,7 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
     static = [sphere]
     # Rejilla MINIMA y moderna: solo el ecuador y el meridiano central, y SOLO en la
     # cara frontal (z>0). Asi la rejilla no se cuela por detras de la esfera (eso
-    # causaba las "lineas negras" finas y el hexagono raro del centro).
+    # causaba las "líneas negras" finas y el hexagono raro del centro).
     def _frontal(pts):
         xs, ys, zs = [], [], []
         for (x, y, z) in pts:
@@ -206,7 +206,7 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
                center=dict(x=0, y=0, z=0))   # vista recta de frente, norte arriba
     fig = go.Figure(data=data, frames=frames, layout=go.Layout(
         width=720, height=720, paper_bgcolor='#05040f', font=dict(color='white'),
-        title=dict(text='Rotacion solar 3D (gira la bola con el raton)', x=0.5,
+        title=dict(text='Rotación solar 3D (gira la bola con el ratón)', x=0.5,
                    font=dict(size=17, color='white')),
         margin=dict(l=0, r=165, t=50, b=80),
         scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False), zaxis=dict(visible=False),
@@ -237,7 +237,7 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
                 args=[['%.2f' % tv], dict(mode='immediate',
                       frame=dict(duration=0, redraw=True))]) for tv in steps])]))
 
-    # ---------- render: April => video + simulacion ; Jose Luis => solo simulacion ----------
+    # ---------- render: April => video + simulación ; Jose Luis => solo simulación ----------
     hay_abril = any(str(p).startswith('2026-04') for p in df['_per'].unique())
     gif = os.path.splitext(video_path)[0] + '.gif'
     if hay_abril and (os.path.exists(gif) or os.path.exists(video_path)):
@@ -245,31 +245,31 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
         with col_v:
             st.markdown("#### 🎬 Video real (fotos de abril)")
             if os.path.exists(video_path):
-                # MP4 H.264: reproductor con boton Play; se para al ultimo dia (sin bucle)
+                # MP4 H.264: reproductor con botón Play; se para al ultimo día (sin bucle)
                 try: st.video(open(video_path, 'rb').read(), format='video/mp4')
                 except Exception: st.video(video_path)
                 st.caption("Fotos reales alineadas (Sol centrado, norte arriba). Dale al ▶ Play.")
             elif os.path.exists(gif):
                 st.image(gif, use_container_width=True)
         with col_s:
-            st.markdown("#### 🖥️ Simulacion 3D — el rastro de cada mancha")
+            st.markdown("#### 🖥️ Simulación 3D — el rastro de cada mancha")
             st.plotly_chart(fig, use_container_width=True)
     else:
         st.plotly_chart(fig, use_container_width=True)
 
     st.caption(
-        "**▶ PLAY** (verde): se forma el rastro y gira la rotacion; **se para al terminar** "
+        "**▶ PLAY** (verde): se forma el rastro y gira la rotación; **se para al terminar** "
         "y el rastro se queda marcado. Entonces **arrastra para girar la bola** y verlo a tu gusto. "
         "Vuelve a dar PLAY para empezar de nuevo. En la leyenda: clic para ocultar, "
         "**doble clic para ver solo una**. Las manchas a distinta latitud giran a distinta "
-        "velocidad (rotacion diferencial)."
+        "velocidad (rotación diferencial)."
     )
 
     st.info(
-        "👉 **Para que sirve la animacion 3D de la derecha:** para ver el **rastro** que deja "
-        "cada mancha a lo largo de los dias. Al darle a **▶ Play**, cada mancha va dibujando "
-        "una linea de su color con el camino que va recorriendo segun gira el Sol. Como las "
+        "👉 **Para que sirve la animación 3D de la derecha:** para ver el **rastro** que deja "
+        "cada mancha a lo largo de los días. Al darle a **▶ Play**, cada mancha va dibujando "
+        "una línea de su color con el camino que va recorriendo segun gira el Sol. Como las "
         "manchas cercanas al ecuador giran mas rapido que las de latitudes altas, **sus "
-        "rastros tienen distinta longitud** — y eso es justo la rotacion diferencial que "
+        "rastros tienen distinta longitud** — y eso es justo la rotación diferencial que "
         "se mide en el TFG. (La de la izquierda son las fotos reales alineadas.)"
     )

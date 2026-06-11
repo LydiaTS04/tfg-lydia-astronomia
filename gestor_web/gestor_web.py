@@ -109,15 +109,15 @@ if _MODO.startswith("Ver"):
                     "editar (solo lectura).")
 else:
     st.sidebar.success("Base de datos nueva y vacia. Mete tus observaciones y "
-                        "manchas, y ve a la pestana 'Resultado final' para "
-                        "el ajuste y la grafica.")
+                        "manchas, y ve a la pestaña 'Resultado final' para "
+                        "el ajuste y la gráfica.")
     if st.sidebar.button("🗑️ Borrar mis datos y empezar de cero"):
         _crear_bd_vacia(_BD_LYDIA, RUTA_BD)
         st.rerun()
     st.sidebar.caption("Tus datos se guardan mientras la app este abierta (para la "
-                       "demostracion en vivo). Si la app se reinicia o pasa un rato "
+                       "demostración en vivo). Si la app se reinicia o pasa un rato "
                        "inactiva, se borran solos: es un cuaderno de pruebas, no un "
-                       "almacen permanente.")
+                       "almacén permanente.")
 
 def get_connection():
     return sqlite3.connect(RUTA_BD)
@@ -259,7 +259,7 @@ if 'ultimo_cambio' in st.session_state and st.session_state.get('ultimo_cambio')
         st.dataframe(_sty, use_container_width=True, hide_index=True)
         st.caption("Las celdas AMARILLAS son las cantidades que cambiaron.")
 
-tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(["Tabla: Observaciones (Fotos)", "Tabla: Mediciones (Manchas)", "Resultados Calculados", "Animacion Solar", "Errores (+-sigma)", "Fotos (galeria)", "Resultado final"])
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(["Tabla: Observaciones (Fotos)", "Tabla: Mediciones (Manchas)", "Resultados Calculados", "Animación Solar", "Errores (±σ)", "Fotos (galería)", "Resultado final"])
 
 with tab1:
     st.header("Observaciones (Datos de la Imagen y Sol)")
@@ -303,7 +303,7 @@ with tab1:
     edited_obs = st.data_editor(df_obs_display, num_rows="dynamic", key="editor_obs", use_container_width=True, column_config=cfg_obs, disabled=_SOLO_LECTURA)
     if _SOLO_LECTURA:
         st.caption("🔒 Modo solo lectura: los datos de Lydia no se pueden modificar.")
-    st.caption("Al guardar se propagan mu y beta a las manchas y se recalculan automaticamente Phi, Lambda y rho. "
+    st.caption("Al guardar se propagan mu y beta a las manchas y se recalculan automáticamente Phi, Lambda y rho. "
                "Despues del guardado veras un panel con las celdas modificadas resaltadas.")
     if (not _SOLO_LECTURA) and st.button("Guardar Cambios en Observaciones"):
         # Mantener hora_sideral que esta en BD (no se ha mostrado, no se debe borrar)
@@ -492,7 +492,7 @@ with tab2:
 
 with tab3:
     st.header("Resultados Calculados por Mancha")
-    st.info("Solo lectura. Se recomputan en VIVO con los valores actuales de Observaciones y Mediciones (no hay boton de guardar).")
+    st.info("Solo lectura. Se recomputan en VIVO con los valores actuales de Observaciones y Mediciones (no hay botón de guardar).")
     conn = get_connection()
     # LEFT JOIN para no perder mediciones; ordenamos en Python por datetime real
     df_res = pd.read_sql_query("""
@@ -522,21 +522,21 @@ with tab3:
     if df_res.empty:
         st.info("No hay datos en la base de datos.")
     else:
-        st.success("Mostrando **{}** medicion(es) de {} totales, agrupadas en **{}** observacion(es) de {} totales.".format(
+        st.success("Mostrando **{}** medición(es) de {} totales, agrupadas en **{}** observación(es) de {} totales.".format(
             len(df_res), n_med_total, df_res['id_observacion'].nunique(), n_obs_total))
         n_huerfanas = df_res['fecha_hora'].isna().sum()
         if n_huerfanas > 0:
-            st.warning("{} medicion(es) sin observacion asociada - aparecen al final.".format(n_huerfanas))
+            st.warning("{} medición(es) sin observación asociada - aparecen al final.".format(n_huerfanas))
 
-        # Filtro por dia (los 153 expanders abiertos colapsan el navegador)
+        # Filtro por día (los 153 expanders abiertos colapsan el navegador)
         df_res['_dia_str'] = df_res['fecha_hora'].apply(
             lambda s: (parsear_fecha(s).strftime('%Y-%m-%d')
                        if pd.notnull(parsear_fecha(s)) else 'Sin fecha'))
         dias_disponibles = ['(Todos)'] + sorted(df_res['_dia_str'].unique())
-        dia_sel = st.selectbox("Filtrar por dia", dias_disponibles, index=0, key="tab3_dia")
+        dia_sel = st.selectbox("Filtrar por día", dias_disponibles, index=0, key="tab3_dia")
         if dia_sel != '(Todos)':
             df_res_view = df_res[df_res['_dia_str'] == dia_sel].reset_index(drop=True)
-            st.info("Mostrando {} medicion(es) del dia {}.".format(len(df_res_view), dia_sel))
+            st.info("Mostrando {} medición(es) del día {}.".format(len(df_res_view), dia_sel))
         else:
             df_res_view = df_res
         expandido_por_defecto = (dia_sel != '(Todos)') and (len(df_res_view) <= 20)
@@ -631,13 +631,13 @@ except NameError:
 if _tab5_obj is not None:
     with _tab5_obj:
         st.header("Errores por Mancha (UN punto por mancha)")
-        st.info("Solo lectura. Los sigmas (sigma_Phi, sigma_Lambda, sigma_T, sigma_omega) se calculan en VIVO con propagacion numerica (delta = 5 px) usando los valores actuales de mu, beta, centro y radio.")
+        st.info("Solo lectura. Los sigmas (sigma_Phi, sigma_Lambda, sigma_T, sigma_omega) se calculan en VIVO con propagación numerica (delta = 5 px) usando los valores actuales de mu, beta, centro y radio.")
         st.markdown("""
         **Una fila por mancha** (no por par de observaciones).
-        - Phi : media + desviacion tipica muestral de las observaciones, comparada con la propagacion (δ = 5 px). Se usa el MAX.
+        - Phi : media + desviacion tipica muestral de las observaciones, comparada con la propagación (δ = 5 px). Se usa el MAX.
         - T   : Metodo 1 mejorado (extremos para omega + residuos para S_Lambda) si N >= 3.
                 Propagacion analitica desde 5 px si N = 2.
-        Estos son exactamente los valores que van a la grafica del modo i.
+        Estos son exactamente los valores que van a la gráfica del modo i.
         """)
         conn_e = get_connection()
         df_e = pd.read_sql_query("""
@@ -663,7 +663,7 @@ if _tab5_obj is not None:
         df_e['dt_obj'] = df_e['fecha_hora'].apply(_parse_e)
         grupos_e = df_e.groupby('id_grupo')
 
-        # --- sigma_Phi y sigma_Lambda por observacion (propagacion 5 px) ---
+        # --- sigma_Phi y sigma_Lambda por observación (propagación 5 px) ---
         def _sigma_phi_obs(obs_r):
             try:
                 px=float(obs_r['pixel_x']); py=float(obs_r['pixel_y'])
@@ -704,7 +704,7 @@ if _tab5_obj is not None:
             n_g = len(gdf)
             if n_g < 2:
                 continue
-            # Phi: media + desv. tipica muestral + propagacion media
+            # Phi: media + desv. tipica muestral + propagación media
             phis = [float(v) for v in gdf['latitud_phi'].tolist()]
             phi_med = sum(phis) / n_g
             S_phi_mu = _math.sqrt(sum((p-phi_med)**2 for p in phis)/(n_g-1)) if n_g >= 2 else 0.0
@@ -763,11 +763,11 @@ if _tab5_obj is not None:
                 metodo=metodo or "sin datos"))
 
         if filas_mancha:
-            st.caption("Total: {} mancha(s) -> {} punto(s) en el grafico.".format(
+            st.caption("Total: {} mancha(s) -> {} punto(s) en el gráfico.".format(
                 len(filas_mancha), len(filas_mancha)))
             for f in sorted(filas_mancha, key=lambda x: int(x['grp'])):
                 st.markdown("---")
-                st.markdown("### Mancha {}  ·  {} obs  ·  metodo: **{}**".format(
+                st.markdown("### Mancha {}  ·  {} obs  ·  método: **{}**".format(
                     f['grp'], f['n_obs'], f['metodo']))
                 st.markdown(
                     "**Primera obs:** {}  &emsp;  **Ultima obs:** {}  &emsp;  "
@@ -775,7 +775,7 @@ if _tab5_obj is not None:
                         f['f1'], f['fN'], f['dt_tot'], f['dL_tot']))
                 st.markdown(
                     "**Phi media:** {:+.4f}° &emsp;±&emsp; **{:.4f}°**  "
-                    "&nbsp;(muestral = {:.4f}°, propagacion = {:.4f}° → se usa el MAX)".format(
+                    "&nbsp;(muestral = {:.4f}°, propagación = {:.4f}° → se usa el MAX)".format(
                         f['phi_med'], f['S_phi_fin'], f['S_phi_mu'], f['S_phi_pr']))
                 if f['S_L_resid'] is not None:
                     st.markdown(
@@ -786,7 +786,7 @@ if _tab5_obj is not None:
                     "**ω:** {:.4f} °/d  &nbsp;{} &emsp;&emsp; **T sidéreo:** {:.3f} d &nbsp;{}".format(
                         f['omega_g'], som_s, f['T_g'], sT_s))
         else:
-            st.info("No hay manchas con 2 o mas observaciones todavia.")
+            st.info("No hay manchas con 2 o mas observaciones todavía.")
         _OLD_TAB5_DESACTIVADO = False
 
 # Bloque antiguo desactivado por la actualizacion (un punto por mancha)
@@ -840,7 +840,7 @@ if False:
                     'Mancha':     str(grp_id),
                     'Obs 1':      str(r1['fecha_hora'])[:16],
                     'Obs 2':      str(r2['fecha_hora'])[:16],
-                    'Dt (dias)':  round(dt_d, 3),
+                    'Dt (días)':  round(dt_d, 3),
                     'DeltaL (°)': round(dL, 4),
                     'Phi (°)':    round(phi_m, 4),
                     'omega (°/d)':round(om, 4),
@@ -851,7 +851,7 @@ if False:
                 })
 
         if filas_err:
-            st.caption("sigma calculado con propagacion numerica (diferencias finitas centrales, delta = 5 px)")
+            st.caption("sigma calculado con propagación numerica (diferencias finitas centrales, delta = 5 px)")
             # Agrupar por mancha y mostrar como texto
             from collections import defaultdict as _dd
             por_mancha = _dd(list)
@@ -867,7 +867,7 @@ if False:
                     sPh_str = "± {:.4f}°".format(p['+-sigma_Phi']) if p['+-sigma_Phi'] is not None else "N/D"
                     st.markdown(
                         "**{}  →  {}** &emsp;&emsp;&emsp;&emsp;&emsp; Δt = **{}** d (días)".format(
-                            p['Obs 1'], p['Obs 2'], p['Dt (dias)']))
+                            p['Obs 1'], p['Obs 2'], p['Dt (días)']))
                     st.markdown(
                         "&emsp; "
                         "ΔΛ = **{:.4f}°** &emsp; "
@@ -881,7 +881,7 @@ if False:
                             sPh_str))
                     st.markdown("")
         else:
-            st.info("No hay pares de observaciones del mismo grupo todavia.")
+            st.info("No hay pares de observaciones del mismo grupo todavía.")
 
 with tab6:
     import galeria
@@ -973,7 +973,7 @@ with tab7:
         c1.metric("A  (°/día)", "+14,10 ± 0,28")
         c2.metric("B  (°/día)", "-2,21 ± 2,47")
         c3.metric("Periodo (sidéreo)", "25,5 ± 0,5 d")
-        c4.metric("χ² reducido", "≈ 0,94")
+        c4.metric("s²", "≈ 0,94")
         _html = os.path.join(_RAIZ, "figuras", "rotacion_solar.html")
         _png = os.path.join(_RAIZ, "figuras", "resultado_faye.png")
         if os.path.exists(_html):
