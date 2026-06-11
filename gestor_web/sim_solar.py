@@ -207,9 +207,9 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
         scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False), zaxis=dict(visible=False),
                    bgcolor='#05040f', camera=cam, aspectmode='cube',
                    dragmode='orbit'),
-        legend=dict(x=1.0, y=0.95, bgcolor='rgba(10,10,40,0.88)', font=dict(size=15, color='white'),
-                    itemsizing='constant', bordercolor='rgba(255,255,255,0.25)', borderwidth=1,
-                    title=dict(text='Manchas (doble clic=aislar)', font=dict(size=14, color='white'))),
+        legend=dict(x=1.0, y=0.95, bgcolor='rgba(4,4,16,0.96)', font=dict(size=16, color='#ffffff'),
+                    itemsizing='constant', bordercolor='rgba(255,255,255,0.35)', borderwidth=1,
+                    title=dict(text='Manchas (doble clic=aislar)', font=dict(size=15, color='#ffffff'))),
         updatemenus=[
             dict(type='buttons', x=0.40, y=-0.02, xanchor='center', showactive=False,
                  bgcolor='#21c95e', bordercolor='#13863e', borderwidth=2,

@@ -1,4 +1,5 @@
 import os
+import io
 import glob
 import sqlite3
 from math import sin, cos, atan2, sqrt, radians, degrees, pi, hypot
@@ -125,6 +126,15 @@ def dibujar_ejes(pil_img, xc, yc, R, l_sol_deg, mu_deg, beta_deg):
         d.text((xc-vx*R-8, yc-vy*R-18), "S", fill=(255, 230, 0), font=fnt)
     return im
 
+def _boton_descarga(img, nombre, key):
+    """Boton para descargar (PNG) la foto con los ejes ya dibujados."""
+    buf = io.BytesIO()
+    img.convert("RGB").save(buf, format="PNG")
+    st.download_button("⬇️ Descargar esta foto con los ejes (PNG)",
+                       data=buf.getvalue(), file_name=nombre,
+                       mime="image/png", key=key)
+
+
 def buscar_foto(nombre):
     cands = (glob.glob(os.path.join(_RAIZ, "fotos abril 2026", "fotos_con_nºmanchas", "*.png")) +
              glob.glob(os.path.join(_RAIZ, "joseluis_agosto_2024_ fotos del sol", "*.jpg")))
@@ -191,6 +201,10 @@ if modo.startswith("Una"):
     if ejes:
         c2.image(ejes, caption="Con ejes y meridianos (cuadrícula heliográfica curva)",
                  use_column_width=True)
+        with open(ejes, "rb") as _f:
+            st.download_button("⬇️ Descargar esta foto con los ejes (PNG)",
+                               data=_f.read(), file_name=os.path.basename(ejes),
+                               mime="image/png", key="dl_db_guardada")
     elif foto:
         # No hay versión guardada con ejes: la dibujamos al vuelo.
         img = Image.open(foto).convert("RGB")
@@ -198,6 +212,7 @@ if modo.startswith("Una"):
         xc, yc, R = det if det else (float(row["cx"]), float(row["cy"]), float(row["R"]))
         out = dibujar_ejes(img, xc, yc, R, float(row["lsol"]), float(row["mu"]), float(row["beta"]))
         c2.image(out, caption="Con ejes y meridianos (dibujado)", use_column_width=True)
+        _boton_descarga(out, "%s_con_ejes.png" % os.path.splitext(str(sel))[0], key="dl_db_dibujada")
     if not foto and not ejes:
         st.warning("No encuentro la foto de esa observación en el repositorio. "
                    "Usa «Subir mi propia foto».")
@@ -235,5 +250,8 @@ else:
         c1, c2 = st.columns(2)
         c1.image(img, caption="Original", use_column_width=True)
         c2.image(out, caption="Con ejes y meridianos", use_column_width=True)
+        _boton_descarga(out, "mi_foto_con_ejes.png", key="dl_subida")
+        st.caption("⚠️ Si recargas la página, la foto subida se borra (es temporal). "
+                   "Descárgala con el botón de arriba para guardarla.")
     else:
         st.info("Sube una foto para empezar.")

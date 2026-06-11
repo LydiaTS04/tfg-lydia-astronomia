@@ -1485,8 +1485,7 @@ def calcular_rotacion(conn):
             _fig_html.add_trace(_pgo.Scatter(
                 x=Tsid_fit, y=phi_ref, mode='lines',
                 line=dict(color='#FFCC00', width=5),
-                name='Tu ajuste ({:+.3f}±{:.3f}) + ({:+.3f}±{:.3f})·sin²Φ'.format(
-                    A_fit, sigA_fit, B_fit, sigB_fit),
+                name='Tu ajuste ({:+.2f}; {:+.2f})'.format(A_fit, B_fit).replace('.', ','),
                 legendgroup='fit'), row=1, col=1)
         _fig_html.add_trace(_pgo.Scatter(
             x=w_carr_r, y=phi_ref, mode='lines',
@@ -1619,7 +1618,7 @@ def calcular_rotacion(conn):
             dragmode='pan',   # Por defecto arrastra para mover (en vez de zoom-rectangulo)
             legend=dict(orientation='h', yanchor='bottom', y=-0.24,
                         xanchor='center', x=0.5,
-                        font=dict(size=17),
+                        font=dict(size=18),
                         bgcolor='rgba(255,255,255,0.95)',
                         bordercolor='#999999', borderwidth=1))
         # Activar zoom con rueda en AMBOS ejes de los dos subplots
