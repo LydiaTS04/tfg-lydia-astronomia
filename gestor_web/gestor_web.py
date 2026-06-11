@@ -973,7 +973,7 @@ with tab7:
         c1.metric("A  (°/día)", "+14,10 ± 0,28")
         c2.metric("B  (°/día)", "-2,21 ± 2,47")
         c3.metric("Periodo (sidéreo)", "25,5 ± 0,5 d")
-        c4.metric("s²", "≈ 0,94")
+        c4.metric("Bondad del ajuste", "s² ≈ 0,94")
         _html = os.path.join(_RAIZ, "figuras", "rotacion_solar.html")
         _png = os.path.join(_RAIZ, "figuras", "resultado_faye.png")
         if os.path.exists(_html):
