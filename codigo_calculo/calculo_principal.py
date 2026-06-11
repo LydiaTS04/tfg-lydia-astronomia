@@ -1619,7 +1619,7 @@ def calcular_rotacion(conn):
             dragmode='pan',   # Por defecto arrastra para mover (en vez de zoom-rectangulo)
             legend=dict(orientation='h', yanchor='bottom', y=-0.24,
                         xanchor='center', x=0.5,
-                        font=dict(size=16),
+                        font=dict(size=17),
                         bgcolor='rgba(255,255,255,0.95)',
                         bordercolor='#999999', borderwidth=1))
         # Activar zoom con rueda en AMBOS ejes de los dos subplots
