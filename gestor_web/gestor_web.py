@@ -105,8 +105,8 @@ RUTA_BD = _preparar_bd(_MODO)
 _SOLO_LECTURA = _MODO.startswith("Ver")   # en modo "ver Lydia" no se puede editar
 
 if _MODO.startswith("Ver"):
-    st.sidebar.info("Estas viendo los datos reales de Lydia Tomás Sanz. Trabajas sobre "
-                    "una copia temporal, asi que el original no se toca.")
+    st.sidebar.info("Estas viendo los datos reales de Lydia Tomás Sanz: no se pueden "
+                    "editar (solo lectura).")
 else:
     st.sidebar.success("Base de datos nueva y vacia. Mete tus observaciones y "
                         "manchas, y ve a la pestana 'Resultados Calculados' para "
@@ -268,7 +268,11 @@ with tab1:
     # OCULTAMOS hora_sideral del editor (sigue en la BD, solo no se muestra)
     columnas_eliminar = [c for c in ['P_angulo', 'B0_latitud', 'id_observacion', 'hora_sideral']
                          if c in df_obs.columns]
-    df_obs_display = df_obs.drop(columns=columnas_eliminar).round(3)
+    df_obs_display = df_obs.drop(columns=columnas_eliminar)
+    for _c in df_obs_display.columns:           # redondea a 3 dec. (tambien las guardadas como texto)
+        _num = pd.to_numeric(df_obs_display[_c], errors="coerce")
+        if df_obs_display[_c].notna().sum() and _num.notna().sum() == df_obs_display[_c].notna().sum():
+            df_obs_display[_c] = _num.round(3)
     cfg_obs = {
         "fecha_hora":     "Fecha (DD/MM/AAAA HH:MM)",
         "archivo_img":    "Nombre de Foto (ID)",
@@ -420,7 +424,11 @@ with tab2:
         df_med = df_med.sort_values(sort_cols, kind='mergesort',
                                     na_position='last').reset_index(drop=True)
         df_med = df_med.drop(columns=['_dt_orden'])
-    df_med_display = df_med.drop(columns=['id_medicion', 'id_observacion']).round(3)
+    df_med_display = df_med.drop(columns=['id_medicion', 'id_observacion'])
+    for _c in df_med_display.columns:
+        _num = pd.to_numeric(df_med_display[_c], errors="coerce")
+        if df_med_display[_c].notna().sum() and _num.notna().sum() == df_med_display[_c].notna().sum():
+            df_med_display[_c] = _num.round(3)
     cfg_med = {
         "fecha_hora":   st.column_config.TextColumn("Fecha y Hora", disabled=True),
         "id_grupo":     "ID Mancha",
@@ -881,7 +889,7 @@ with tab7:
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("A  (°/día)", "+14,10 ± 0,28")
     c2.metric("B  (°/día)", "-2,21 ± 2,47")
-    c3.metric("Periodo (sidéreo)", "≈ 25 días")
+    c3.metric("Periodo (sidéreo)", "25,5 ± 0,5 d")
     c4.metric("χ² reducido", "≈ 0,94")
 
     # Grafica interactiva (la misma que abre el "modo i" del codigo principal):

@@ -81,10 +81,16 @@ La aplicación incluye además tres herramientas interactivas:
 
 ## 3. Código de cálculo — `codigo_calculo/`
 
-- **`calculo_principal.py`** — núcleo del trabajo: transformación píxel →
-  coordenadas heliográficas (ángulo µ, corrección óptica β_opt, proyección
-  ortográfica inversa y triángulo del polo solar) y ajuste de la rotación
-  diferencial. Su «modo i» abre directamente la aplicación.
+- **`calculo_principal.py`** — el programa principal del trabajo: un conversor
+  astronómico interactivo. A partir de la posición de una mancha en la foto (su
+  píxel) obtiene sus **coordenadas heliográficas** (Φ, Λ) encadenando, en este
+  orden: el ángulo **µ** (orienta la foto hacia el polo de la eclíptica π), la
+  **corrección óptica β_opt** del telescopio, la **proyección ortográfica
+  inversa** (del plano de la foto a la esfera) y el **triángulo del polo solar**
+  (que la lleva al eje de rotación del Sol). Incluye además las conversiones
+  entre coordenadas (horizontales, ecuatoriales y eclípticas), el cálculo del
+  **periodo** de cada mancha y el **ajuste de la rotación diferencial**
+  ω(Φ) = A + B·sin²Φ. Su «modo i» abre la aplicación web.
 - **`calculo_coeficientes_AB.py`** — calcula los coeficientes A y B del ajuste de
   la rotación (con todos los datos y sin la toma del 22 por la mañana).
 - **`gen_tablas.py`** — genera las tablas en LaTeX a partir de la base de datos.
@@ -110,8 +116,8 @@ Ajustando ω(Φ) = A + B·sin²Φ a las 27 manchas seguidas:
 
 El coeficiente **B < 0** confirma la rotación diferencial, el ecuador gira más
 rápido que los polos, lo que descarta el giro rígido. El periodo ecuatorial
-resulta de unos **25 días sidéreos**, en buen acuerdo con los valores clásicos de
-Carrington y Faye.
+resulta de **25,5 ± 0,5 días sidéreos**, en buen acuerdo con los valores clásicos
+de Carrington y Faye.
 
 ---
 
