@@ -15,7 +15,7 @@
         #ui-panel {
             position: absolute; top: 20px; left: 20px; width: 340px;
             background: rgba(255,255,255,0.88); border: 1px solid #cbd5e0;
-            border-radius: 12px; padding: 25px;
+            border-radius: 12px; padding: 16px 18px 18px 18px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.10); backdrop-filter: blur(8px); max-height: calc(100vh - 40px); overflow-y: auto;
         }
         h1 { font-size: 1.2rem; margin: 0 0 20px; color: #2b6cb0; text-align: center;
@@ -43,7 +43,7 @@
                      font-size: 0.75rem; margin-top: 15px; color: #718096;
                      background: rgba(255,255,255,0.7); padding: 10px; border-radius: 8px; }
         .data-val { color: #1a202c; font-family: monospace; font-size: 0.9rem; font-weight: bold; }
-        .legend { margin-top: 20px; font-size: 0.78rem; color: #4a5568; font-weight: 500; }
+        .legend { margin-top: 10px; font-size: 0.78rem; color: #4a5568; font-weight: 500; }
         .legend-item { display: flex; align-items: center; margin-bottom: 6px; }
         .color-box { width: 14px; height: 14px; border-radius: 4px; margin-right: 8px;
                      box-shadow: 0 0 2px rgba(0,0,0,0.3); flex-shrink:0; }
@@ -1219,7 +1219,7 @@ window.onload = function() {
     const scene    = new THREE.Scene();
     const camera   = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, 0.1, 1000);
     // Cámara en el lado SUR mirando hacia el Norte → brújula correcta (W izquierda, E derecha)
-    camera.position.set(0, 15, 42);
+    camera.position.set(0, 13, 36);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(innerWidth, innerHeight);
@@ -1229,7 +1229,7 @@ window.onload = function() {
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.minDistance = 10;
-    controls.maxDistance = 60; controls.target.set(-8, 1, 0); controls.update();
+    controls.maxDistance = 60; controls.target.set(-4, 1, 0); controls.update();
 
     // Esfera de referencia (muy tenue)
     scene.add(new THREE.Mesh(
