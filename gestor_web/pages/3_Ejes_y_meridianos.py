@@ -136,6 +136,16 @@ def buscar_foto(nombre):
             return c
     return None
 
+def buscar_ejes(nombre):
+    """Foto con los ejes ya dibujados (carpeta CON_EJES_CURVOS)."""
+    d = os.path.join(_RAIZ, "fotos abril 2026", "fotos_con_ejes_TODAS", "CON_EJES_CURVOS")
+    key = nombre.lower().replace(" ", "").replace("-copia", "")
+    for c in glob.glob(os.path.join(d, "*_EJES.png")):
+        b = os.path.splitext(os.path.basename(c))[0].lower().replace("_ejes", "").replace(" ", "")
+        if key and (key in b or b in key):
+            return c
+    return None
+
 # ======================= INTERFAZ =======================
 st.title("\U0001F9ED Ejes y meridianos sobre una foto del Sol")
 st.markdown(
@@ -172,27 +182,26 @@ if modo.startswith("Una"):
     sel = st.selectbox("Observación (foto)", nombres)
     row = dict(zip(["archivo_img", "cx", "cy", "R", "lsol", "mu", "beta"],
                    fila_por_nombre[sel]))
-    foto = buscar_foto(sel)
-    if not foto:
-        st.warning("La foto de esa observación no está en el repositorio. "
-                   "Prueba con otra, o usa «Subir mi propia foto».")
-        st.stop()
+    foto = buscar_foto(sel)     # original (con números de manchas)
+    ejes = buscar_ejes(sel)     # foto con los ejes ya dibujados (CON_EJES_CURVOS)
 
-    img = Image.open(foto).convert("RGB")
-    bgr = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR) if TIENE_CV2 else None
-    det = detectar_disco(bgr) if TIENE_CV2 else None
-    if det:
-        xc, yc, R = det
-        st.caption("Disco detectado automáticamente: centro (%.0f, %.0f), radio %.0f px." % (xc, yc, R))
-    else:
-        xc, yc, R = float(row["cx"]), float(row["cy"]), float(row["R"])
-        st.caption("Usando el centro y el radio guardados en la base de datos.")
-
-    out = dibujar_ejes(img, xc, yc, R, float(row["lsol"]), float(row["mu"]), float(row["beta"]))
     c1, c2 = st.columns(2)
-    c1.image(img, caption="Original", use_column_width=True)
-    c2.image(out, caption="Con ejes y meridianos", use_column_width=True)
-    st.caption("Datos usados — µ = %.2f°,  β_opt = %.2f°,  λ☉ = %.2f°." %
+    if foto:
+        c1.image(foto, caption="Foto original (con números de manchas)", use_column_width=True)
+    if ejes:
+        c2.image(ejes, caption="Con ejes y meridianos (cuadrícula heliográfica curva)",
+                 use_column_width=True)
+    elif foto:
+        # No hay versión guardada con ejes: la dibujamos al vuelo.
+        img = Image.open(foto).convert("RGB")
+        det = detectar_disco(cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)) if TIENE_CV2 else None
+        xc, yc, R = det if det else (float(row["cx"]), float(row["cy"]), float(row["R"]))
+        out = dibujar_ejes(img, xc, yc, R, float(row["lsol"]), float(row["mu"]), float(row["beta"]))
+        c2.image(out, caption="Con ejes y meridianos (dibujado)", use_column_width=True)
+    if not foto and not ejes:
+        st.warning("No encuentro la foto de esa observación en el repositorio. "
+                   "Usa «Subir mi propia foto».")
+    st.caption("Datos de la observación — µ = %.2f°,  β_opt = %.2f°,  λ☉ = %.2f°." %
                (float(row["mu"]), float(row["beta"]), float(row["lsol"])))
 
 else:
