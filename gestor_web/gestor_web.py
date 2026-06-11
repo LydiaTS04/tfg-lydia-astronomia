@@ -105,7 +105,7 @@ RUTA_BD = _preparar_bd(_MODO)
 _SOLO_LECTURA = _MODO.startswith("Ver")   # en modo "ver Lydia" no se puede editar
 
 if _MODO.startswith("Ver"):
-    st.sidebar.info("Estas viendo los datos reales de Lydia Tomás Sanz: no se pueden "
+    st.sidebar.info("Estas viendo los datos reales de Lydia Tomás Sanz. No se pueden "
                     "editar (solo lectura).")
 else:
     st.sidebar.success("Base de datos nueva y vacia. Mete tus observaciones y "
