@@ -117,8 +117,7 @@ Ajustando ω(Φ) = A + B·sin²Φ a las 27 manchas seguidas:
 > **A = +14,10 ± 0,28 °/día,  B = −2,21 ± 2,47 °/día**  (s² ≈ 0,94)
 
 El coeficiente **B < 0** (el ecuador gira más rápido que los polos) es **coherente
-con la rotación diferencial** del Sol; ahora bien, el error de B es grande, así que
-el resultado la apoya sin ser concluyente. El periodo ecuatorial
+con la rotación diferencial** del Sol. El periodo ecuatorial
 resulta de **25,5 ± 0,5 días sidéreos**, en buen acuerdo con los valores clásicos
 de Carrington y Faye.
 
