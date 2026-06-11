@@ -1182,7 +1182,7 @@ def calcular_rotacion(conn):
     #     sigB   = sqrt( S    / Delta )
     #   Solo se usan manchas con sigma_omega > 0 y T en rango fisico.
     # ================================================================
-    A_fit = B_fit = sigA_fit = sigB_fit = chi2_red = None
+    A_fit = B_fit = sigA_fit = sigB_fit = s2_red = None
     N_fit_used = 0
     fit_aplicado = False
 
@@ -1230,12 +1230,12 @@ def calcular_rotacion(conn):
                 s2       = ss / (N - 2)
                 sigA_fit = sqrt(s2 * Sxx / Delta)
                 sigB_fit = sqrt(s2 * N   / Delta)
-                chi2_red = s2   # con pesos uniformes, chi^2/dof = s^2
+                s2_red = s2   # con pesos uniformes, s^2 = SCR/dof
             else:
                 # N=2: ajuste pasa exactamente por los 2 puntos, sin errores
                 sigA_fit = 0.0
                 sigB_fit = 0.0
-                chi2_red = None
+                s2_red = None
             fit_aplicado = True
 
     print()
@@ -1247,12 +1247,12 @@ def calcular_rotacion(conn):
         print("   N = {} manchas usadas (incluyendo todas las no sospechosas)".format(N_fit_used))
         print("   A_exp = {:+.4f} +- {:.4f}  grados/dia".format(A_fit, sigA_fit))
         print("   B_exp = {:+.4f} +- {:.4f}  grados/dia".format(B_fit, sigB_fit))
-        if chi2_red is not None:
-            cal = ("OK (cerca de 1)" if 0.5 < chi2_red < 2.0
-                   else ("subestimacion de errores" if chi2_red > 2 else "sobreestimacion de errores"))
-            print("   chi^2 reducido = {:.3f}   [{}]".format(chi2_red, cal))
+        if s2_red is not None:
+            cal = ("OK (cerca de 1)" if 0.5 < s2_red < 2.0
+                   else ("subestimacion de errores" if s2_red > 2 else "sobreestimacion de errores"))
+            print("   s^2 = {:.3f}   [{}]".format(s2_red, cal))
         else:
-            print("   chi^2 no calculable (N = 2, 0 grados de libertad).")
+            print("   s^2 no calculable (N = 2, 0 grados de libertad).")
     else:
         print("   [!] No hay datos suficientes para el ajuste (necesitas >= 2 manchas validas).")
     print()
