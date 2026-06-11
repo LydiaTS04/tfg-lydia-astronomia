@@ -104,7 +104,7 @@ def render_galeria(base_dir):
         "(el telescopio invierte la imagen).")
 
     dir_ejes  = os.path.join(base_dir, 'fotos abril 2026', 'fotos_con_ejes_TODAS', 'CON_EJES_CURVOS')
-    dir_limp  = os.path.join(base_dir, 'fotos abril 2026', 'fotos_con_nºmanchas')
+    dir_limp  = os.path.join(base_dir, 'fotos abril 2026', 'fotos_con_nmanchas')
     dir_jl    = os.path.join(base_dir, 'joseluis_agosto_2024_ fotos del sol')
 
     ejes = glob.glob(os.path.join(dir_ejes, '*_EJES.png'))
