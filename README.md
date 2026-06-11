@@ -57,7 +57,7 @@ En la barra lateral se ofrecen **dos modos**:
   estructura, donde el usuario introduce sus propias observaciones y manchas y
   obtiene su ajuste ω(Φ) = A + B·sin²Φ con su gráfica.
 
-La aplicación se organiza en pestañas:
+El gestor se organiza en pestañas:
 
 | Pestaña | Contenido |
 |---|---|
@@ -69,13 +69,15 @@ La aplicación se organiza en pestañas:
 | Fotos (galería) | fotografías con ejes abril 2026, limpias abril 2026 y las de agosto de 2024 |
 | Resultado final | gráfica interactiva (ω y periodo frente a la latitud) y comparación con Carrington y Faye |
 
-La aplicación incluye además dos herramientas interactivas:
+La aplicación incluye además tres herramientas interactivas:
 
 - **Ejes y meridianos.** Dibuja el ecuador, los paralelos heliográficos y el eje
   Norte–Sur sobre una foto del Sol (de la base de datos o subida por el usuario introduciendo unos valores)
 - **Calculadora astronómica.** Reproduce las conversiones del código principal
   (coordenadas horizontales, ecuatoriales y eclípticas), el cálculo del ángulo µ
   del Sol y la distancia entre dos manchas.
+- **Simulador 3D del ángulo µ.** Explciado en 1º apartado.
+  
 
 ## 3. Código de cálculo — `codigo_calculo/`
 
