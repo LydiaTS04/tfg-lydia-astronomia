@@ -24,7 +24,7 @@ abre en el navegador:
 > **https://tfg-lydia-astronomia-gdan89vjq3jvfdgtdy8bez.streamlit.app/**
 
 En el menú lateral se elige el apartado: **Inicio**, **Gestor de manchas**,
-**Ejes y meridianos**, **Calculadora astronómica** o **Simulador 3D**.
+**Simulador 3D**, **Ejes y meridianos** o **Calculadora astronómica**.
 
 **Opción 2 — Ejecutar en local.** Requiere Python 3:
 
@@ -34,15 +34,12 @@ cd gestor_web
 streamlit run Inicio.py
 ```
 
-El simulador 3D está dentro de la aplicación, en el apartado **Simulador 3D**.
-
----
 
 ### 1. Simulador 3D del ángulo µ — `simulador_3d/`
 
 Esfera celeste interactiva que calcula **µ** en tiempo real según la hora sidérea,
 el día del año y la latitud, mostrando π, γ, el arco ⊙–π y el ángulo µ sobre el Sol,
-**además de calcular otros valores** (Bπ y su regla de signo, y el azimut y la altura
+además de calcular otros valores (Bπ y su regla de signo, y el azimut y la altura
 del Sol y de π). Funciona en el navegador, sin instalación.
 
 
