@@ -77,7 +77,7 @@ La aplicación incluye además tres herramientas interactivas:
 - **Calculadora astronómica.** Reproduce las conversiones del código principal
   (coordenadas horizontales, ecuatoriales y eclípticas), el cálculo del ángulo µ
   del Sol y la distancia entre dos manchas.
-- **Simulador 3D del ángulo µ.** Explciado en 1º apartado.
+- **Simulador 3D del ángulo µ.** Explicado en el primer apartado.
   
 
 ## 3. Código de cálculo — `codigo_calculo/`
