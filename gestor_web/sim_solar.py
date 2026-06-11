@@ -102,7 +102,7 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
     t_start = min(p[0] for tr in tracks for p in tr['pts'])
     t_end   = max(p[0] for tr in tracks for p in tr['pts'])
     if t_end <= t_start: t_end = t_start + 1.0
-    n_frames = 40
+    n_frames = 30
     steps = [round(t_start + (t_end - t_start) * i / (n_frames - 1), 4) for i in range(n_frames)]
 
     def interp(tr, tv):
@@ -130,8 +130,9 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
             rc.append(0.35 + 0.65 * max(0.0, zz))
         Xs.append(rx); Ys.append(ry); Zs.append(rz); Cs.append(rc)
     sphere = go.Surface(x=Xs, y=Ys, z=Zs, surfacecolor=Cs, showscale=False, opacity=1.0,
-        hoverinfo='skip', showlegend=False,
-        colorscale=[[0.0, '#2a0500'], [0.25, '#7a1a00'], [0.5, '#cc5500'],
+        hoverinfo='skip', showlegend=False, cmin=0.0, cmax=1.0,
+        lighting=dict(ambient=0.95, diffuse=0.15, specular=0.03, roughness=1.0),
+        colorscale=[[0.0, '#5a1600'], [0.25, '#8a2a00'], [0.5, '#cc5500'],
                     [0.75, '#ff9930'], [0.92, '#ffd070'], [1.0, '#fff5c0']])
 
     static = [sphere]
@@ -145,14 +146,14 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
                 [1.004*math.cos(p)*math.cos(lr) for p in ps])
     for phi in (-60, -30, 0, 30, 60):
         gx, gy, gz = par(phi)
-        col = 'rgba(255,255,255,0.9)' if phi == 0 else 'rgba(255,235,150,0.18)'
+        col = 'rgba(255,255,255,0.85)' if phi == 0 else 'rgba(255,235,150,0.12)'
         static.append(go.Scatter3d(x=gx, y=gy, z=gz, mode='lines',
-            line=dict(color=col, width=(4 if phi == 0 else 1)), showlegend=False, hoverinfo='skip'))
-    for lon in range(-150, 181, 30):
+            line=dict(color=col, width=(3 if phi == 0 else 1)), showlegend=False, hoverinfo='skip'))
+    for lon in range(-135, 181, 45):
         gx, gy, gz = mer(lon)
-        col = 'rgba(0,255,255,0.9)' if lon == 0 else 'rgba(255,235,150,0.15)'
+        col = 'rgba(0,255,255,0.85)' if lon == 0 else 'rgba(255,235,150,0.10)'
         static.append(go.Scatter3d(x=gx, y=gy, z=gz, mode='lines',
-            line=dict(color=col, width=(4 if lon == 0 else 1)), showlegend=False, hoverinfo='skip'))
+            line=dict(color=col, width=(3 if lon == 0 else 1)), showlegend=False, hoverinfo='skip'))
     static.append(go.Scatter3d(x=[0, 0], y=[1.2, -1.2], z=[0, 0], mode='markers+text',
         marker=dict(color='cyan', size=4), text=['N', 'S'],
         textfont=dict(color='cyan', size=16, family='Arial Black'),
@@ -175,10 +176,10 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
         p, c = interp(tr, tv); X, Y, Z = _pos3(p, c, 1.03)
         vis = Z > 0
         return go.Scatter3d(x=[X], y=[Y], z=[Z], mode='markers+text',
-            marker=dict(color=cmap[tr['g']], size=12 if vis else 5,
-                        opacity=1.0 if vis else 0.2, line=dict(color='white', width=2)),
-            text=['M'+str(tr['g'])], textposition='top center',
-            textfont=dict(color='white', size=13, family='Arial Black'),
+            marker=dict(color=cmap[tr['g']], size=16 if vis else 5,
+                        opacity=1.0 if vis else 0.15, line=dict(color='white', width=2.5)),
+            text=['M'+str(tr['g'])] if vis else [''], textposition='top center',
+            textfont=dict(color='white', size=15, family='Arial Black'),
             name='M'+str(tr['g']), legendgroup='M'+str(tr['g']), showlegend=True,
             hovertemplate='<b>M'+str(tr['g'])+'</b><br>Phi=%.2f deg<extra></extra>' % tr['pts'][0][1])
 
@@ -202,12 +203,13 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
         width=720, height=720, paper_bgcolor='#05040f', font=dict(color='white'),
         title=dict(text='Rotacion solar 3D (gira la bola con el raton)', x=0.5,
                    font=dict(size=17, color='white')),
-        margin=dict(l=0, r=140, t=50, b=80),
+        margin=dict(l=0, r=165, t=50, b=80),
         scene=dict(xaxis=dict(visible=False), yaxis=dict(visible=False), zaxis=dict(visible=False),
                    bgcolor='#05040f', camera=cam, aspectmode='cube',
                    dragmode='orbit'),
-        legend=dict(x=1.0, y=0.9, bgcolor='rgba(10,10,40,0.7)', font=dict(size=12),
-                    title=dict(text='Manchas (doble clic=aislar)')),
+        legend=dict(x=1.0, y=0.95, bgcolor='rgba(10,10,40,0.88)', font=dict(size=15, color='white'),
+                    itemsizing='constant', bordercolor='rgba(255,255,255,0.25)', borderwidth=1,
+                    title=dict(text='Manchas (doble clic=aislar)', font=dict(size=14, color='white'))),
         updatemenus=[
             dict(type='buttons', x=0.40, y=-0.02, xanchor='center', showactive=False,
                  bgcolor='#21c95e', bordercolor='#13863e', borderwidth=2,

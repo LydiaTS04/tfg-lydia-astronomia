@@ -109,8 +109,15 @@ if _MODO.startswith("Ver"):
                     "editar (solo lectura).")
 else:
     st.sidebar.success("Base de datos nueva y vacia. Mete tus observaciones y "
-                        "manchas, y ve a la pestana 'Resultados Calculados' para "
+                        "manchas, y ve a la pestana 'Resultado final' para "
                         "el ajuste y la grafica.")
+    if st.sidebar.button("🗑️ Borrar mis datos y empezar de cero"):
+        _crear_bd_vacia(_BD_LYDIA, RUTA_BD)
+        st.rerun()
+    st.sidebar.caption("Tus datos se guardan mientras la app este abierta (para la "
+                       "demostracion en vivo). Si la app se reinicia o pasa un rato "
+                       "inactiva, se borran solos: es un cuaderno de pruebas, no un "
+                       "almacen permanente.")
 
 def get_connection():
     return sqlite3.connect(RUTA_BD)
@@ -880,37 +887,155 @@ with tab6:
     import galeria
     galeria.render_galeria(_RAIZ)
 
+# ---------------------------------------------------------------------
+# Ajuste w(Phi)=A+B sin^2(Phi) a partir de una BD (modo "mis datos")
+# ---------------------------------------------------------------------
+def _delta_long(L1, L2, dt, om=14.370):
+    dL = (L2 - L1) % 360.0
+    k = int(om * dt / 360.0)
+    a = dL + k * 360.0
+    b = dL + (k + 1) * 360.0
+    return b if abs(b / dt - om) < abs(a / dt - om) else a
+
+def _ajuste_usuario(ruta_bd):
+    """(N, A, sA, B, sB, s2, puntos). A=None si no hay ajuste posible."""
+    con = sqlite3.connect(ruta_bd)
+    try:
+        filas = con.execute(
+            "SELECT m.id_grupo, o.fecha_hora, m.latitud_phi, m.longitud_L "
+            "FROM Mediciones m JOIN Observaciones o "
+            "  ON m.id_observacion = o.id_observacion "
+            "WHERE m.latitud_phi IS NOT NULL AND m.longitud_L IS NOT NULL "
+            "  AND COALESCE(m.excluida, 0) = 0 ORDER BY m.id_grupo").fetchall()
+    except Exception:
+        filas = []
+    con.close()
+    grupos = {}
+    for g, fh, phi, L in filas:
+        grupos.setdefault(g, []).append((fh, phi, L))
+    puntos = []
+    for g, obs in grupos.items():
+        if len(obs) < 2:
+            continue
+        phim = sum(o[1] for o in obs) / len(obs)
+        td = [parsear_fecha(o[0]) for o in obs]
+        if any(pd.isnull(t) for t in td):
+            continue
+        try:
+            ts = [t.timestamp() / 86400.0 for t in td]
+        except Exception:
+            continue
+        pares = sorted(zip(ts, [o[2] for o in obs]), key=lambda x: x[0])
+        t1, L1 = pares[0]
+        tN, LN = pares[-1]
+        dt = tN - t1
+        if dt <= 0:
+            continue
+        dL = _delta_long(L1, LN, dt)
+        if abs(dL) < 0.1:
+            continue
+        om = dL / dt
+        T = 360.0 / om
+        if 22.0 <= T <= 32.0:
+            puntos.append((phim, om))
+    N = len(puntos)
+    if N < 2:
+        return N, None, None, None, None, None, puntos
+    Sx = sum(math.sin(math.radians(p)) ** 2 for p, _ in puntos)
+    Sy = sum(o for _, o in puntos)
+    Sxx = sum(math.sin(math.radians(p)) ** 4 for p, _ in puntos)
+    Sxy = sum(math.sin(math.radians(p)) ** 2 * o for p, o in puntos)
+    D = N * Sxx - Sx * Sx
+    if abs(D) < 1e-12:
+        return N, None, None, None, None, None, puntos
+    A = (Sxx * Sy - Sx * Sxy) / D
+    B = (N * Sxy - Sx * Sy) / D
+    if N > 2:
+        ss = sum((o - (A + B * math.sin(math.radians(p)) ** 2)) ** 2 for p, o in puntos)
+        s2 = ss / (N - 2)
+        sA = math.sqrt(abs(s2 * Sxx / D))
+        sB = math.sqrt(abs(s2 * N / D))
+    else:
+        s2 = sA = sB = 0.0
+    return N, A, sA, B, sB, s2, puntos
+
+def _coma(x, dec=2):
+    return ("{:+." + str(dec) + "f}").format(x).replace(".", ",")
+
 with tab7:
     import streamlit.components.v1 as components
     st.header("Resultado final")
-    st.markdown("Ajuste de la ley de rotación diferencial **ω(Φ) = A + B·sin²Φ** "
-                "a las 27 manchas seguidas.")
 
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("A  (°/día)", "+14,10 ± 0,28")
-    c2.metric("B  (°/día)", "-2,21 ± 2,47")
-    c3.metric("Periodo (sidéreo)", "25,5 ± 0,5 d")
-    c4.metric("χ² reducido", "≈ 0,94")
-
-    # Grafica interactiva (la misma que abre el "modo i" del codigo principal):
-    # se puede mover, hacer zoom y pasar el raton por cada punto.
-    _html = os.path.join(_RAIZ, "figuras", "rotacion_solar.html")
-    _png  = os.path.join(_RAIZ, "figuras", "resultado_faye.png")
-    if os.path.exists(_html):
-        st.caption("Gráfica interactiva: pasa el ratón por los puntos, amplía y muévela.")
-        components.html(open(_html, encoding="utf-8").read(), height=560, scrolling=True)
-    elif os.path.exists(_png):
-        st.image(_png, use_column_width=True)
-
-    st.subheader("Comparación con los valores históricos (sidéreos)")
-    _tabla = pd.DataFrame(
-        [["Este trabajo (manchas)", "+14,10 ± 0,28", "-2,21 ± 2,47", "2026"],
-         ["Carrington (manchas)",   "14,52",          "-2,84",         "1863"],
-         ["Faye (manchas)",         "14,37",          "-2,30",         "1865"],
-         ["Snodgrass (Doppler)",    "14,71",          "-2,39",         "1983"]],
-        columns=["Modelo", "A (°/día)", "B (°/día)", "Año"])
-    st.table(_tabla)
-
-    st.success("B < 0: el ecuador gira más rápido que los polos → rotación diferencial del Sol "
-               "(descarta el giro rígido). El valor central coincide casi con la ley de Faye.")
-    st.caption("Si has medido tus propios datos, tu ajuste y tu gráfica salen en la pestaña «Resultados Calculados».")
+    if _SOLO_LECTURA:
+        st.markdown("Ajuste de la ley de rotación diferencial **ω(Φ) = A + B·sin²Φ** "
+                    "a las 27 manchas seguidas.")
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("A  (°/día)", "+14,10 ± 0,28")
+        c2.metric("B  (°/día)", "-2,21 ± 2,47")
+        c3.metric("Periodo (sidéreo)", "25,5 ± 0,5 d")
+        c4.metric("χ² reducido", "≈ 0,94")
+        _html = os.path.join(_RAIZ, "figuras", "rotacion_solar.html")
+        _png = os.path.join(_RAIZ, "figuras", "resultado_faye.png")
+        if os.path.exists(_html):
+            st.caption("Gráfica interactiva: pasa el ratón por los puntos, amplía y muévela.")
+            components.html(open(_html, encoding="utf-8").read(), height=560, scrolling=True)
+        elif os.path.exists(_png):
+            st.image(_png, use_column_width=True)
+        st.subheader("Comparación con los valores históricos (sidéreos)")
+        _tabla = pd.DataFrame(
+            [["Este trabajo (manchas)", "+14,10 ± 0,28", "-2,21 ± 2,47", "2026"],
+             ["Carrington (manchas)", "14,52", "-2,84", "1863"],
+             ["Faye (manchas)", "14,37", "-2,30", "1865"],
+             ["Snodgrass (Doppler)", "14,71", "-2,39", "1990"]],
+            columns=["Modelo", "A (°/día)", "B (°/día)", "Año"])
+        st.table(_tabla)
+        st.success("B < 0: el ecuador gira más rápido que los polos → coherente con la rotación "
+                   "diferencial del Sol. El valor central coincide casi con la ley de Faye.")
+    else:
+        st.markdown("Ajuste de la ley **ω(Φ) = A + B·sin²Φ** a **tus** manchas medidas.")
+        N, A, sA, B, sB, s2, puntos = _ajuste_usuario(RUTA_BD)
+        if A is None:
+            st.info("Aún no hay ajuste. Necesitas al menos **2 manchas** seguidas en **2 o más "
+                    "fotos** distintas (para tener periodo), con periodo físico (22-32 días). "
+                    "Mete tus observaciones y manchas en las pestañas anteriores y vuelve aquí.")
+        else:
+            T = 360.0 / A
+            c1, c2, c3, c4 = st.columns(4)
+            c1.metric("A  (°/día)", _coma(A) + " ± " + _coma(sA).lstrip("+"))
+            c2.metric("B  (°/día)", _coma(B) + " ± " + _coma(sB).lstrip("+"))
+            c3.metric("Periodo ecuatorial", _coma(T, 1).lstrip("+") + " d")
+            c4.metric("Manchas usadas", str(N))
+            if N < 3:
+                st.caption("Con solo 2 manchas el ajuste pasa exacto por los puntos (sin estimación de error). Mete más para acotarlo.")
+            phis = [(-60 + i) for i in range(121)]
+            def _w(aa, bb, ph):
+                return aa + bb * math.sin(math.radians(ph)) ** 2
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(x=[p for p, _ in puntos], y=[o for _, o in puntos],
+                                     mode="markers", name="Tus manchas",
+                                     marker=dict(size=10, color="#1f77b4")))
+            fig.add_trace(go.Scatter(x=phis, y=[_w(A, B, ph) for ph in phis], mode="lines",
+                                     name="Tu ajuste", line=dict(color="#f1c40f", width=3)))
+            fig.add_trace(go.Scatter(x=phis, y=[_w(14.52, -2.84, ph) for ph in phis], mode="lines",
+                                     name="Carrington", line=dict(color="black", dash="dash")))
+            fig.add_trace(go.Scatter(x=phis, y=[_w(14.370, -2.30, ph) for ph in phis], mode="lines",
+                                     name="Faye", line=dict(color="red", dash="dot")))
+            fig.update_layout(xaxis_title="Latitud heliográfica Φ (°)",
+                              yaxis_title="Velocidad angular ω (°/día)", height=470,
+                              legend=dict(font=dict(size=14)),
+                              margin=dict(l=10, r=10, t=30, b=10))
+            st.plotly_chart(fig, use_container_width=True)
+            st.subheader("Comparación con los valores históricos")
+            _tabla = pd.DataFrame(
+                [["Tu ajuste (manchas)", _coma(A) + " ± " + _coma(sA).lstrip("+"),
+                  _coma(B) + " ± " + _coma(sB).lstrip("+"), "—"],
+                 ["Carrington (manchas)", "14,52", "-2,84", "1863"],
+                 ["Faye (manchas)", "14,37", "-2,30", "1865"]],
+                columns=["Modelo", "A (°/día)", "B (°/día)", "Año"])
+            st.table(_tabla)
+            if B < 0:
+                st.success("Tu **B < 0**: el ecuador gira más rápido que los polos → coherente con "
+                           "la rotación diferencial. (Con pocas manchas, el error de B puede ser grande.)")
+            else:
+                st.warning("Tu **B ≥ 0**: con estos datos no se aprecia la rotación diferencial "
+                           "(normal con pocas manchas o un rango de latitudes estrecho).")

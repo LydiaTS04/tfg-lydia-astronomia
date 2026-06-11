@@ -1617,10 +1617,11 @@ def calcular_rotacion(conn):
             font=dict(family='Arial', size=12),
             height=820, hovermode='closest',
             dragmode='pan',   # Por defecto arrastra para mover (en vez de zoom-rectangulo)
-            legend=dict(orientation='h', yanchor='bottom', y=-0.22,
+            legend=dict(orientation='h', yanchor='bottom', y=-0.24,
                         xanchor='center', x=0.5,
-                        bgcolor='rgba(255,255,255,0.9)',
-                        bordercolor='#bbbbbb', borderwidth=1))
+                        font=dict(size=16),
+                        bgcolor='rgba(255,255,255,0.95)',
+                        bordercolor='#999999', borderwidth=1))
         # Activar zoom con rueda en AMBOS ejes de los dos subplots
         _fig_html.update_xaxes(fixedrange=False, row=1, col=1)
         _fig_html.update_xaxes(fixedrange=False, row=1, col=2)
