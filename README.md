@@ -92,7 +92,7 @@ La aplicación incluye además tres herramientas interactivas:
   **periodo** de cada mancha y el **ajuste de la rotación diferencial**
   ω(Φ) = A + B·sin²Φ. Su «modo i» abre la aplicación web.
 - **`calculo_coeficientes_AB.py`** — calcula los coeficientes A y B del ajuste de
-  la rotación (con todos los datos y sin la toma del 22 por la mañana).
+  la rotación.
 - **`gen_tablas.py`** — genera las tablas en LaTeX a partir de la base de datos.
 - **`video_alineado.py`** — prepara el vídeo de las manchas alineadas que se
   muestra en la pestaña «Animación».
