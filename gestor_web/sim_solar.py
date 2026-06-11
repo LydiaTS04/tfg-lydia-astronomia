@@ -136,27 +136,31 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
                     [0.75, '#ff9930'], [0.92, '#ffd070'], [1.0, '#fff5c0']])
 
     static = [sphere]
-    def par(phi, n=120):
-        pr = math.radians(phi); ls = [2*math.pi*i/(n-1)-math.pi for i in range(n)]
-        return ([1.004*math.cos(pr)*math.sin(l) for l in ls], [1.004*math.sin(pr)]*n,
-                [1.004*math.cos(pr)*math.cos(l) for l in ls])
-    def mer(lon, n=100):
-        lr = math.radians(lon); ps = [math.pi*(-0.5+i/(n-1)) for i in range(n)]
-        return ([1.004*math.cos(p)*math.sin(lr) for p in ps], [1.004*math.sin(p) for p in ps],
-                [1.004*math.cos(p)*math.cos(lr) for p in ps])
-    for phi in (-60, -30, 0, 30, 60):
-        gx, gy, gz = par(phi)
-        col = 'rgba(255,255,255,0.85)' if phi == 0 else 'rgba(255,235,150,0.12)'
-        static.append(go.Scatter3d(x=gx, y=gy, z=gz, mode='lines',
-            line=dict(color=col, width=(3 if phi == 0 else 1)), showlegend=False, hoverinfo='skip'))
-    for lon in range(-135, 181, 45):
-        gx, gy, gz = mer(lon)
-        col = 'rgba(0,255,255,0.85)' if lon == 0 else 'rgba(255,235,150,0.10)'
-        static.append(go.Scatter3d(x=gx, y=gy, z=gz, mode='lines',
-            line=dict(color=col, width=(3 if lon == 0 else 1)), showlegend=False, hoverinfo='skip'))
-    static.append(go.Scatter3d(x=[0, 0], y=[1.2, -1.2], z=[0, 0], mode='markers+text',
-        marker=dict(color='cyan', size=4), text=['N', 'S'],
-        textfont=dict(color='cyan', size=16, family='Arial Black'),
+    # Rejilla MINIMA y moderna: solo el ecuador y el meridiano central, y SOLO en la
+    # cara frontal (z>0). Asi la rejilla no se cuela por detras de la esfera (eso
+    # causaba las "lineas negras" finas y el hexagono raro del centro).
+    def _frontal(pts):
+        xs, ys, zs = [], [], []
+        for (x, y, z) in pts:
+            if z > 0.06:
+                xs.append(x); ys.append(y); zs.append(z)
+            else:
+                xs.append(None); ys.append(None); zs.append(None)
+        return xs, ys, zs
+    _R = 1.006
+    _ecu = [(_R*math.sin(t), 0.0, _R*math.cos(t))
+            for t in (2*math.pi*i/240 - math.pi for i in range(241))]
+    gx, gy, gz = _frontal(_ecu)
+    static.append(go.Scatter3d(x=gx, y=gy, z=gz, mode='lines',
+        line=dict(color='rgba(255,255,255,0.55)', width=2), showlegend=False, hoverinfo='skip'))
+    _mc = [(0.0, _R*math.sin(p), _R*math.cos(p))
+           for p in (math.pi*(-0.5+i/240) for i in range(241))]
+    gx, gy, gz = _frontal(_mc)
+    static.append(go.Scatter3d(x=gx, y=gy, z=gz, mode='lines',
+        line=dict(color='rgba(125,220,255,0.5)', width=2), showlegend=False, hoverinfo='skip'))
+    static.append(go.Scatter3d(x=[0, 0], y=[1.18, -1.18], z=[0, 0], mode='markers+text',
+        marker=dict(color='rgba(125,220,255,0.9)', size=4), text=['N', 'S'],
+        textfont=dict(color='rgba(170,235,255,0.95)', size=15, family='Arial Black'),
         textposition='top center', showlegend=False, hoverinfo='skip'))
     n_base = len(static)
 
@@ -211,15 +215,18 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
                     itemsizing='constant', bordercolor='rgba(255,255,255,0.35)', borderwidth=1,
                     title=dict(text='Manchas (doble clic=aislar)', font=dict(size=15, color='#ffffff'))),
         updatemenus=[
-            dict(type='buttons', x=0.40, y=-0.02, xanchor='center', showactive=False,
-                 bgcolor='#21c95e', bordercolor='#13863e', borderwidth=2,
-                 font=dict(color='white', size=15, family='Arial Black'),
-                 buttons=[dict(label='▶  PLAY', method='animate',
+            dict(type='buttons', x=0.28, y=-0.03, xanchor='center', yanchor='top', showactive=False,
+                 bgcolor='#22c55e', bordercolor='rgba(0,0,0,0)', borderwidth=0,
+                 pad=dict(l=10, r=10, t=6, b=6),
+                 font=dict(color='white', size=14, family='Arial'),
+                 buttons=[dict(label='▶  Play', method='animate',
                      args=[None, dict(frame=dict(duration=180, redraw=True),
                                       fromcurrent=True, mode='immediate',
                                       transition=dict(duration=0))])]),
-            dict(type='buttons', x=0.60, y=-0.02, xanchor='center', showactive=False,
-                 bgcolor='#555566', font=dict(color='white', size=14),
+            dict(type='buttons', x=0.62, y=-0.03, xanchor='center', yanchor='top', showactive=False,
+                 bgcolor='#334155', bordercolor='rgba(0,0,0,0)', borderwidth=0,
+                 pad=dict(l=10, r=10, t=6, b=6),
+                 font=dict(color='white', size=14, family='Arial'),
                  buttons=[dict(label='⏸  Pausa', method='animate',
                      args=[[None], dict(frame=dict(duration=0, redraw=False), mode='immediate')])])],
         sliders=[dict(active=0, x=0, len=1.0, pad=dict(b=8, t=40),
