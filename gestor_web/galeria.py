@@ -105,7 +105,7 @@ def render_galeria(base_dir):
 
     dir_ejes  = os.path.join(base_dir, 'fotos abril 2026', 'fotos_con_ejes_TODAS', 'CON_EJES_CURVOS')
     dir_limp  = os.path.join(base_dir, 'fotos abril 2026', 'fotos_con_nmanchas')
-    dir_jl    = os.path.join(base_dir, 'joseluis_agosto_2024_ fotos del sol')
+    dir_jl    = os.path.join(base_dir, 'José_Luis_Guijarro_agosto_2024_ fotos_sol')
 
     ejes = glob.glob(os.path.join(dir_ejes, '*_EJES.png'))
     ejes.sort(key=_key_abril)
@@ -121,7 +121,7 @@ def render_galeria(base_dir):
     t_ejes, t_limp, t_jl = st.tabs([
         "🟢 Con ejes (abril 2026) — %d" % len(ejes),
         "🌞 Con nº de manchas (abril 2026) — %d" % len(limpias),
-        "🔭 José Luis (agosto 2024) — %d" % len(jl),
+        "🔭 José Luis Guijarro (agosto 2024) — %d" % len(jl),
     ])
     with t_ejes:
         st.caption("Fotografías de abril 2026 con el eje N-S, el ecuador y los paralelos "
@@ -131,6 +131,6 @@ def render_galeria(base_dir):
         st.caption("Fotografías de abril 2026 con las manchas numeradas. En orden por fecha.")
         _seccion(st, limpias, _label_abril, 'li')
     with t_jl:
-        st.caption("Fotos cedidas por José Luis (agosto 2024), en orden por fecha. "
+        st.caption("Fotos cedidas por José Luis Guijarro (agosto 2024), en orden por fecha. "
                    "La foto de Júpiter no se incluye.")
         _seccion(st, jl, _label_jl, 'jl')

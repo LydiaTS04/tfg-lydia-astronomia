@@ -137,7 +137,7 @@ def _boton_descarga(img, nombre, key):
 
 def buscar_foto(nombre):
     cands = (glob.glob(os.path.join(_RAIZ, "fotos abril 2026", "fotos_con_nmanchas", "*.png")) +
-             glob.glob(os.path.join(_RAIZ, "joseluis_agosto_2024_ fotos del sol", "*.jpg")))
+             glob.glob(os.path.join(_RAIZ, "José_Luis_Guijarro_agosto_2024_ fotos_sol", "*.jpg")))
     key = nombre.lower().replace(" ", "")
     for c in cands:
         b = os.path.splitext(os.path.basename(c))[0].lower()
