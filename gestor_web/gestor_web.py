@@ -589,7 +589,7 @@ with tab3:
 with tab4:
     import sim_solar
     sim_solar.render_animacion(RUTA_BD, video_path=os.path.join(
-        _RAIZ, 'fotos abril 2026', 'fotos_con_ejes_TODAS', 'CON_EJES_CURVOS',
+        _RAIZ, 'fotos_abril_2026', 'fotos_con_ejes_TODAS', 'CON_EJES_CURVOS',
         'video', 'video_manchas.mp4'))
 
 

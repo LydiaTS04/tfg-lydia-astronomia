@@ -136,7 +136,7 @@ def _boton_descarga(img, nombre, key):
 
 
 def buscar_foto(nombre):
-    cands = (glob.glob(os.path.join(_RAIZ, "fotos abril 2026", "fotos_con_nmanchas", "*.png")) +
+    cands = (glob.glob(os.path.join(_RAIZ, "fotos_abril_2026", "fotos_con_nmanchas", "*.png")) +
              glob.glob(os.path.join(_RAIZ, "José_Luis_Guijarro_agosto_2024_ fotos_sol", "*.jpg")))
     key = nombre.lower().replace(" ", "")
     for c in cands:
@@ -148,7 +148,7 @@ def buscar_foto(nombre):
 
 def buscar_ejes(nombre):
     """Foto con los ejes ya dibujados (carpeta CON_EJES_CURVOS)."""
-    d = os.path.join(_RAIZ, "fotos abril 2026", "fotos_con_ejes_TODAS", "CON_EJES_CURVOS")
+    d = os.path.join(_RAIZ, "fotos_abril_2026", "fotos_con_ejes_TODAS", "CON_EJES_CURVOS")
     key = nombre.lower().replace(" ", "").replace("-copia", "")
     for c in glob.glob(os.path.join(d, "*_EJES.png")):
         b = os.path.splitext(os.path.basename(c))[0].lower().replace("_ejes", "").replace(" ", "")

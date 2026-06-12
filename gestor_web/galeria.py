@@ -103,8 +103,8 @@ def render_galeria(base_dir):
         "respecto a la original, para que **coincidan con la realidad** "
         "(el telescopio invierte la imagen).")
 
-    dir_ejes  = os.path.join(base_dir, 'fotos abril 2026', 'fotos_con_ejes_TODAS', 'CON_EJES_CURVOS')
-    dir_limp  = os.path.join(base_dir, 'fotos abril 2026', 'fotos_con_nmanchas')
+    dir_ejes  = os.path.join(base_dir, 'fotos_abril_2026', 'fotos_con_ejes_TODAS', 'CON_EJES_CURVOS')
+    dir_limp  = os.path.join(base_dir, 'fotos_abril_2026', 'fotos_con_nmanchas')
     dir_jl    = os.path.join(base_dir, 'José_Luis_Guijarro_agosto_2024_ fotos_sol')
 
     ejes = glob.glob(os.path.join(dir_ejes, '*_EJES.png'))

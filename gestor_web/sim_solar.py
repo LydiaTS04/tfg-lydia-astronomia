@@ -47,7 +47,7 @@ def render_animacion(ruta_bd, video_path=None, excluir_fechas=('22-04-2026 10:19
 
     if video_path is None:
         base = os.path.dirname(os.path.abspath(ruta_bd))
-        video_path = os.path.join(base, 'fotos abril 2026', 'fotos_con_ejes_TODAS',
+        video_path = os.path.join(base, 'fotos_abril_2026', 'fotos_con_ejes_TODAS',
                                   'CON_EJES_CURVOS', 'video', 'video_manchas.mp4')
 
     st.header("Animación: Rotación Solar")
