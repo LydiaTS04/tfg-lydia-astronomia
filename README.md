@@ -8,7 +8,6 @@ móvil, comprobando que el ecuador gira más rápido que los polos.
 
 ```
 tfg-lydia-astronomia/
-├── simulador_3d/     Simulador 3D del ángulo µ
 ├── gestor_web/       Aplicación + base de datos (datos, ajuste, animación, resultado)
 ├── codigo_calculo/   Código de cálculo (píxel → coordenadas heliográficas, ajuste)
 └── figuras/          Generación de figuras (ejes/meridianos y gráfica de Faye)
@@ -35,13 +34,13 @@ streamlit run Inicio.py
 ```
 
 
-### 1. Simulador 3D del ángulo µ — `simulador_3d/`
+### 1. Simulador 3D del ángulo µ (herramienta interactiva online)
 
 Esfera celeste interactiva que calcula **µ** en tiempo real según la hora sidérea,
 el día del año y la latitud, mostrando π, γ, el arco ⊙–π y el ángulo µ sobre el Sol,
 además de calcular otros valores (Bπ y su regla de signo, y el azimut y la altura
 del Sol y de π). Funciona en el navegador, sin instalación.
-👉 [Abrir el simulador](https://lydiats04.github.io/tfg-lydia-astronomia/simulador_3d/simulador_muu_v3_standalone.html)
+👉 [Abrir el simulador](https://lydiats04.github.io/Simulador-3D/)
 
 
 ## 2. Aplicación y base de datos — `gestor_web/`
