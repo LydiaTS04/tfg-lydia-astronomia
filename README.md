@@ -42,6 +42,8 @@ además de calcular otros valores (Bπ y su regla de signo, y el azimut y la alt
 del Sol y de π). Funciona en el navegador, sin instalación.
 👉 [Abrir el simulador](https://lydiats04.github.io/Simulador-3D/)
 
+> ℹ️ *El simulador es una herramienta web independiente: se abre y funciona en el navegador desde el enlace de arriba, sin instalar nada.*
+
 
 ## 2. Aplicación y base de datos — `gestor_web/`
 
