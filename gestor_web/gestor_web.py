@@ -1012,10 +1012,10 @@ with tab7:
                 return aa + bb * math.sin(math.radians(ph)) ** 2
             fig = go.Figure()
             fig.add_trace(go.Scatter(x=[p for p, _ in puntos], y=[o for _, o in puntos],
-                                     mode="markers", name="Tus manchas",
+                                     mode="markers", name="Manchas Lydia",
                                      marker=dict(size=10, color="#1f77b4")))
             fig.add_trace(go.Scatter(x=phis, y=[_w(A, B, ph) for ph in phis], mode="lines",
-                                     name="Tu ajuste", line=dict(color="#f1c40f", width=3)))
+                                     name="Ajuste Lydia", line=dict(color="#f1c40f", width=3)))
             fig.add_trace(go.Scatter(x=phis, y=[_w(14.52, -2.84, ph) for ph in phis], mode="lines",
                                      name="Carrington", line=dict(color="black", dash="dash")))
             fig.add_trace(go.Scatter(x=phis, y=[_w(14.370, -2.30, ph) for ph in phis], mode="lines",
@@ -1027,7 +1027,7 @@ with tab7:
             st.plotly_chart(fig, use_container_width=True)
             st.subheader("Comparación con los valores históricos")
             _tabla = pd.DataFrame(
-                [["Tu ajuste (manchas)", _coma(A) + " ± " + _coma(sA).lstrip("+"),
+                [["Ajuste Lydia (manchas)", _coma(A) + " ± " + _coma(sA).lstrip("+"),
                   _coma(B) + " ± " + _coma(sB).lstrip("+"), "—"],
                  ["Carrington (manchas)", "14,52", "-2,84", "1863"],
                  ["Faye (manchas)", "14,37", "-2,30", "1865"]],

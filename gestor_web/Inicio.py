@@ -27,7 +27,7 @@ st.markdown(
     "ecuatoriales y eclípticas), el ángulo µ del Sol y la distancia entre manchas."
 )
 
-st.info("💡 Si mides tus propios datos, tu ajuste y tu gráfica final aparecen en la "
+st.info("💡 Si mides tus propios datos, el ajuste y la gráfica final aparecen en la "
         "pestaña «Resultado final».")
 
 st.markdown("**Resultado principal:** A = +14,10 ± 0,28 °/día, B = −2,21 ± 2,47 °/día "

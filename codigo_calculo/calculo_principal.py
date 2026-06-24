@@ -1263,7 +1263,7 @@ def calcular_rotacion(conn):
     print("   {:<18} {:>14.3f} {:>16.3f}".format("Faye (1865)",       FAYE_A,       FAYE_B))
     if fit_aplicado:
         print("   {:<18} {:>5.3f} +- {:5.3f}  {:>7.3f} +- {:5.3f}".format(
-            "Tu ajuste", A_fit, sigA_fit, B_fit, sigB_fit))
+            "Ajuste Lydia", A_fit, sigA_fit, B_fit, sigB_fit))
         # Interpretacion automatica
         print()
         difA_carr = abs(A_fit - CARRINGTON_A); difA_faye = abs(A_fit - FAYE_A)
@@ -1368,7 +1368,7 @@ def calcular_rotacion(conn):
                  linewidth=4.5, alpha=1.0,
                  path_effects=[mpe.Stroke(linewidth=7.0, foreground='#000000'),
                                mpe.Normal()],
-                 label='Tu ajuste  ({:+.3f}±{:.3f}) + ({:+.3f}±{:.3f})·sin² Φ'.format(
+                 label='Ajuste Lydia  ({:+.3f}±{:.3f}) + ({:+.3f}±{:.3f})·sin² Φ'.format(
                      A_fit, sigA_fit, B_fit, sigB_fit))
     # Bbox blanco para que los numeros M1, M2... se lean siempre
     _BBOX_N = dict(boxstyle='round,pad=0.20', facecolor='white',
@@ -1380,7 +1380,7 @@ def calcular_rotacion(conn):
                      fmt='o', color='#1565c0', ecolor='#1565c0',
                      capsize=10, elinewidth=2.8, capthick=2.8,
                      markersize=12, zorder=6,
-                     label='Tus manchas (1 punto/mancha, ±σ)')
+                     label='Manchas Lydia (1 punto/mancha, ±σ)')
         for T, phi, lbl in zip(T_n, ph_n, lbl_n):
             ax1.annotate('M'+str(lbl), (T, phi), textcoords="offset points",
                          xytext=(12, 12), fontsize=11, color='#1565c0',
@@ -1419,7 +1419,7 @@ def calcular_rotacion(conn):
                  linewidth=4.5, alpha=1.0,
                  path_effects=[mpe.Stroke(linewidth=7.0, foreground='#000000'),
                                mpe.Normal()],
-                 label='Tu ajuste  ({:+.3f}±{:.3f}) + ({:+.3f}±{:.3f})·sin² Φ'.format(
+                 label='Ajuste Lydia  ({:+.3f}±{:.3f}) + ({:+.3f}±{:.3f})·sin² Φ'.format(
                      A_fit, sigA_fit, B_fit, sigB_fit))
     _BBOX_N2 = dict(boxstyle='round,pad=0.20', facecolor='white',
                     edgecolor='#2e7d32', linewidth=0.8, alpha=0.92)
@@ -1428,7 +1428,7 @@ def calcular_rotacion(conn):
                      fmt='o', color='#2e7d32', ecolor='#2e7d32',
                      capsize=10, elinewidth=2.8, capthick=2.8,
                      markersize=12, zorder=6,
-                     label='Tus manchas (1 punto/mancha, ±σ)')
+                     label='Manchas Lydia (1 punto/mancha, ±σ)')
         for w, phi, lbl in zip(om_n, ph_n, lbl_n):
             ax2.annotate('M'+str(lbl), (w, phi), textcoords="offset points",
                          xytext=(12, 12), fontsize=11, color='#2e7d32',
@@ -1485,7 +1485,7 @@ def calcular_rotacion(conn):
             _fig_html.add_trace(_pgo.Scatter(
                 x=Tsid_fit, y=phi_ref, mode='lines',
                 line=dict(color='#FFCC00', width=5),
-                name='Tu ajuste ({:+.2f}; {:+.2f})'.format(A_fit, B_fit).replace('.', ','),
+                name='Ajuste Lydia ({:+.2f}; {:+.2f})'.format(A_fit, B_fit).replace('.', ','),
                 legendgroup='fit'), row=1, col=1)
         _fig_html.add_trace(_pgo.Scatter(
             x=w_carr_r, y=phi_ref, mode='lines',
@@ -1501,7 +1501,7 @@ def calcular_rotacion(conn):
             _fig_html.add_trace(_pgo.Scatter(
                 x=w_fit_r, y=phi_ref, mode='lines',
                 line=dict(color='#FFCC00', width=5),
-                name='Tu ajuste', legendgroup='fit', showlegend=False),
+                name='Ajuste Lydia', legendgroup='fit', showlegend=False),
                 row=1, col=2)
 
         # ---- Manchas normales con hovertext detallado ----
@@ -1527,7 +1527,7 @@ def calcular_rotacion(conn):
                 textposition='top center',
                 textfont=dict(color='#1565c0', size=11),
                 hovertext=_hovN, hoverinfo='text',
-                name='Tus manchas (±σ)'), row=1, col=1)
+                name='Manchas Lydia (±σ)'), row=1, col=1)
             _fig_html.add_trace(_pgo.Scatter(
                 x=om_n, y=ph_n, mode='markers+text',
                 marker=dict(color='#2e7d32', size=12,
@@ -1538,7 +1538,7 @@ def calcular_rotacion(conn):
                 textposition='top center',
                 textfont=dict(color='#2e7d32', size=11),
                 hovertext=_hovN, hoverinfo='text',
-                name='Tus manchas (±σ)', showlegend=False), row=1, col=2)
+                name='Manchas Lydia (±σ)', showlegend=False), row=1, col=2)
         if sospechosos:
             _hovS = [_hov(r) for r in sospechosos]
             _fig_html.add_trace(_pgo.Scatter(
@@ -2914,7 +2914,7 @@ with tab7:
     st.success("B < 0: el ecuador gira más rápido que los polos → coherente con la rotación "
                "diferencial del Sol. El valor central coincide casi con la ley de Faye.")
     st.caption("Ajuste ω(Φ) = A + B·sin²Φ a las 27 manchas seguidas (s² ≈ 0,94). "
-               "Si has metido tus propios datos, tu ajuste está en la pestaña «Resultado final».")
+               "Si has metido tus propios datos, el ajuste está en la pestaña «Resultado final».")
 '''
             path_st = os.path.join(CARPETA_TFG, "gestor_web", "gestor_web.py")
             if False:  # el gestor se mantiene como archivo propio; no se regenera
