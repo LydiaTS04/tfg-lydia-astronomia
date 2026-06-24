@@ -1474,18 +1474,18 @@ def calcular_rotacion(conn):
         _fig_html.add_trace(_pgo.Scatter(
             x=Tsid_c, y=phi_ref, mode='lines',
             line=dict(color='black', dash='dash', width=2.5),
-            name='Carrington ({:.3f}{:+.3f}sin²Φ)'.format(CARRINGTON_A, CARRINGTON_B),
+            name='Carrington ({:.2f}; {:+.2f})'.format(CARRINGTON_A, CARRINGTON_B).replace('.', ','),
             legendgroup='carr'), row=1, col=1)
         _fig_html.add_trace(_pgo.Scatter(
             x=Tsid_f, y=phi_ref, mode='lines',
             line=dict(color='#c62828', dash='dot', width=2.5),
-            name='Faye ({:.3f}{:+.3f}sin²Φ)'.format(FAYE_A, FAYE_B),
+            name='Faye ({:.2f}; {:+.2f})'.format(FAYE_A, FAYE_B).replace('.', ','),
             legendgroup='faye'), row=1, col=1)
         if fit_aplicado:
             _fig_html.add_trace(_pgo.Scatter(
                 x=Tsid_fit, y=phi_ref, mode='lines',
                 line=dict(color='#FFCC00', width=5),
-                name='Ajuste Lydia ({:+.2f}; {:+.2f})'.format(A_fit, B_fit).replace('.', ','),
+                name='Ajuste Lydia ({:.2f}; {:+.2f})'.format(A_fit, B_fit).replace('.', ','),
                 legendgroup='fit'), row=1, col=1)
         _fig_html.add_trace(_pgo.Scatter(
             x=w_carr_r, y=phi_ref, mode='lines',
